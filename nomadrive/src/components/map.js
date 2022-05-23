@@ -27,7 +27,8 @@ export default function Map() {
             // Add a source for the state polygons.
             map.current.addSource('world', {
                 type: 'geojson',
-                data: geojson
+                data: geojson,
+                'generateId': true
             });
 
 
@@ -39,12 +40,12 @@ export default function Map() {
                 'source': 'world',
                 'layout': {},
                 'paint': {
-                    'fill-color': '#627BC1',
+                    'fill-color': '#000000',
                     'fill-opacity': [
                         'case',
                         ['boolean', ['feature-state', 'hover'], false],
-                        1,
-                        0.5
+                        0.5,
+                        0
                     ]
                 }
             });
@@ -56,8 +57,8 @@ export default function Map() {
                 'source': 'world',
                 'layout': {},
                 'paint': {
-                    'line-color': '#627BC1',
-                    'line-width': 2
+                    'line-color': '#000000',
+                    'line-width': 1
 
                 }
             });
@@ -90,8 +91,8 @@ export default function Map() {
                             { hover: false }
                         );
                     }
-                    hoveredStateId = e.features[0].properties.sov_a3;
-                    console.log("ID: " + e.features[0].properties.sov_a3)
+                    hoveredStateId = e.features[0].id;
+                    console.log("ID: " + hoveredStateId)
                     map.current.setFeatureState(
                         { id: hoveredStateId, source: 'world' },
                         { hover: true }
