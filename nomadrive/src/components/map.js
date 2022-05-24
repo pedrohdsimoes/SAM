@@ -3,6 +3,8 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
 import geojson from '../custom.geo.json'
+import CountryMedia from './countryMedia';
+
 export default function Map() {
     const mapContainer = useRef(null);
     const map = useRef(null);
@@ -59,6 +61,7 @@ export default function Map() {
             center: [lng, lat],
             zoom: zoom
         });
+        // Navigation UI
         map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
 
         var hoveredStateId = null;
@@ -103,28 +106,43 @@ export default function Map() {
 
                 }
             });
+            // -------------------- CLICK -----------------------//
+
             // When a click event occurs on a feature in the world layer, open a popup at the
             // location of the click, with description HTML from its properties.
             map.current.on('click', 'world-fills', function (e) {
-                console.log("Centro " + multiPolygonCenterLatitude + "," + multiPolygoncenterLongitude)
-                var centerLatitude = getLatLngCenter(e.features[0].geometry.coordinates[0])[0];
-                var centerLongitude = getLatLngCenter(e.features[0].geometry.coordinates[0])[1];
-                var multiPolygonCenterLatitude = getLatLngCenter(e.features[0].geometry.coordinates[0])[0][0];
-                var multiPolygoncenterLongitude = getLatLngCenter(e.features[0].geometry.coordinates[0])[0][1];
+
+                // var centerLatitude = getLatLngCenter(e.features[0].geometry.coordinates[0])[0];
+                // var centerLongitude = getLatLngCenter(e.features[0].geometry.coordinates[0])[1];
+                var centerLatitude = e.features[0].geometry.coordinates[0][0][0];
+                var centerLongitude = e.features[0].geometry.coordinates[0][0][1];
+                var multiPolygonCenterLatitude = e.features[0].geometry.coordinates[0][0][0][0];
+                var multiPolygonCenterLongitude = e.features[0].geometry.coordinates[0][0][0][1];
+
+
+                console.log("Centro " + centerLatitude + "," + centerLongitude)
+                console.log("CentroMP " + multiPolygonCenterLatitude + "," + multiPolygonCenterLongitude)
+
+
                 //Fly animation to the country clicked
                 map.current.flyTo({
                     center: [
                         e.features[0].geometry.type == 'Polygon' ? centerLatitude : multiPolygonCenterLatitude,
-                        e.features[0].geometry.type == 'Polygon' ? centerLongitude : multiPolygoncenterLongitude
+                        e.features[0].geometry.type == 'Polygon' ? centerLongitude : multiPolygonCenterLongitude
                     ],
-                    zoom: 9,
+                    zoom: 5,
                     bearing: 7,
                     essential: true // this animation is considered essential with respect to prefers-reduced-motion
                 });
 
                 new maplibregl.Popup()
                     .setLngLat(e.lngLat)
-                    .setHTML(e.features[0].properties.name)
+                    .setHTML(e.features[0].properties.name
+                        + "\n 2 photos"
+                        + "\n 3 videos"
+                        + "\n 1 songs"
+                        + "<div><button >" + e.features[0].properties.name + " Memories </button ></div>"
+                    )
                     .addTo(map.current);
 
             });
@@ -138,6 +156,8 @@ export default function Map() {
             map.current.on('mouseleave', 'world-layer', function () {
                 map.current.getCanvas().style.cursor = '';
             });
+
+            // -------------------- HOVER -----------------------//
 
             // When the user moves their mouse over the state-fill layer, we'll update the
             // feature state for the feature under the mouse.
