@@ -13,46 +13,6 @@ export default function Map() {
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
 
-    function rad2degr(rad) { return rad * 180 / Math.PI; }
-    function degr2rad(degr) { return degr * Math.PI / 180; }
-
-    /**
-     * @param latLngInDeg array of arrays with latitude and longtitude
-     *   pairs in degrees. e.g. [[latitude1, longtitude1], [latitude2
-     *   [longtitude2] ...]
-     *
-     * @return array with the center latitude longtitude pairs in 
-     *   degrees.
-     */
-    function getLatLngCenter(latLngInDegr) {
-        var LATIDX = 0;
-        var LNGIDX = 1;
-        var sumX = 0;
-        var sumY = 0;
-        var sumZ = 0;
-
-        for (var i = 0; i < latLngInDegr.length; i++) {
-            var lat = degr2rad(latLngInDegr[i][LATIDX]);
-            var lng = degr2rad(latLngInDegr[i][LNGIDX]);
-            // sum of cartesian coordinates
-            sumX += Math.cos(lat) * Math.cos(lng);
-            sumY += Math.cos(lat) * Math.sin(lng);
-            sumZ += Math.sin(lat);
-        }
-
-        var avgX = sumX / latLngInDegr.length;
-        var avgY = sumY / latLngInDegr.length;
-        var avgZ = sumZ / latLngInDegr.length;
-
-        // convert average x, y, z coordinate to latitude and longtitude
-        var lng = Math.atan2(avgY, avgX);
-        var hyp = Math.sqrt(avgX * avgX + avgY * avgY);
-        var lat = Math.atan2(avgZ, hyp);
-
-        return ([rad2degr(lat), rad2degr(lng)]);
-    }
-
-
     useEffect(() => {
         if (map.current) return; //stops map from intializing more than once
         map.current = new maplibregl.Map({
@@ -112,23 +72,14 @@ export default function Map() {
             // location of the click, with description HTML from its properties.
             map.current.on('click', 'world-fills', function (e) {
 
-                // var centerLatitude = getLatLngCenter(e.features[0].geometry.coordinates[0])[0];
-                // var centerLongitude = getLatLngCenter(e.features[0].geometry.coordinates[0])[1];
-                var centerLatitude = e.features[0].geometry.coordinates[0][0][0];
-                var centerLongitude = e.features[0].geometry.coordinates[0][0][1];
-                var multiPolygonCenterLatitude = e.features[0].geometry.coordinates[0][0][0][0];
-                var multiPolygonCenterLongitude = e.features[0].geometry.coordinates[0][0][0][1];
-
-
-                console.log("Centro " + centerLatitude + "," + centerLongitude)
-                console.log("CentroMP " + multiPolygonCenterLatitude + "," + multiPolygonCenterLongitude)
-
+                var clickedLatitude = e.lngLat.wrap().lng;
+                var clickedLongitude = e.lngLat.wrap().lat;
 
                 //Fly animation to the country clicked
                 map.current.flyTo({
                     center: [
-                        e.features[0].geometry.type == 'Polygon' ? centerLatitude : multiPolygonCenterLatitude,
-                        e.features[0].geometry.type == 'Polygon' ? centerLongitude : multiPolygonCenterLongitude
+                        clickedLatitude,
+                        clickedLongitude
                     ],
                     zoom: 5,
                     bearing: 7,
