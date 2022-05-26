@@ -1,13 +1,13 @@
 import './App.css';
-import Navbar from './components/navbar.js';
-import Map from './components/map.js';
+import MyRoutes from './MyRoutes';
 
 function App() {
   return (
+
     <div className="App" >
-      <Navbar />
-      <Map />
+      <MyRoutes />
     </div>
+
   );
 }
 

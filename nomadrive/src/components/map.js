@@ -3,7 +3,8 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
 import geojson from '../custom.geo.json'
-import CountryMedia from './countryMedia';
+import { useNavigate } from "react-router-dom";
+
 
 export default function Map() {
     const mapContainer = useRef(null);
@@ -12,6 +13,11 @@ export default function Map() {
     const [lat] = useState(35.6844);
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
+
+    let navigate = useNavigate();
+    function handleClick() {
+        navigate('/CountryMedia', { replace: true });
+    }
 
     useEffect(() => {
         if (map.current) return; //stops map from intializing more than once
@@ -92,9 +98,12 @@ export default function Map() {
                         + "\n 2 photos"
                         + "\n 3 videos"
                         + "\n 1 songs"
-                        + "<div><button >" + e.features[0].properties.name + " Memories </button ></div>"
+                        + `<div><button onClick=${handleClick}> Travel To ${e.features[0].properties.name} </button ></div>`
                     )
                     .addTo(map.current);
+
+
+                var selectedCountry = e.features[0].properties.name;
 
             });
 
@@ -110,7 +119,7 @@ export default function Map() {
 
             // -------------------- HOVER -----------------------//
 
-            // When the user moves their mouse over the state-fill layer, we'll update the
+            // When the user moves their mouse over the world-fill layer, we'll update the
             // feature state for the feature under the mouse.
             map.current.on('mousemove', 'world-fills', function (e) {
                 if (e.features.length > 0) {
@@ -149,6 +158,8 @@ export default function Map() {
 
     return (
         <div className="map-wrap">
+            <button onClick={handleClick}> Travel To </button >
+
             <div ref={mapContainer} className="map" />
         </div>
     );
