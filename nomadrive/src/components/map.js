@@ -103,8 +103,6 @@ export default function Map() {
                     .addTo(map.current);
 
 
-                var selectedCountry = e.features[0].properties.name;
-
             });
 
             // Change the cursor to a pointer when the mouse is over the world layer.
