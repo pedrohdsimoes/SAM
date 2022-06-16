@@ -7,6 +7,8 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Collections from '@mui/icons-material/Collections';
 import VideoLibrary from '@mui/icons-material/VideoLibrary';
 import { useNavigate, useLocation } from "react-router-dom";
+import { IconButton } from '@mui/material';
+import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 
 
 export default function CountryMedia() {
@@ -15,8 +17,7 @@ export default function CountryMedia() {
     let location = useLocation();
     function handleChooseFile(e) {
         console.log(e.target.files);
-        setFile(URL.createObjectURL(e.target.files[0]));
-        console.log(file);
+        localStorage.setItem(URL.createObjectURL(e.target.files[0]));
     }
 
     let navigate = useNavigate();
@@ -30,15 +31,17 @@ export default function CountryMedia() {
                 <h1>{location.state.countryName}</h1>
 
             </div>
-            <div>
-                <h2>Add Image:</h2>
-                <input type="file" onChange={handleChooseFile} />
-                <img src={file} />
 
-                <button onClick={handleHomePage}> HomePage </button >
-            </div>
             <div>
                 <Box sx={{ pb: 7 }}>
+                    <div>
+                        <h2>Add Image:</h2>
+                        <input type="file" onChange={handleChooseFile} accept="audio/*,video/*,image/*" id="myFileInput" />
+                        <img src={file} />
+                        <IconButton onClick={handleHomePage}>
+                            <TravelExploreIcon />
+                        </IconButton>
+                    </div>
                     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
                             showLabels
