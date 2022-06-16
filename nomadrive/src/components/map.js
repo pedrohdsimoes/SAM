@@ -98,7 +98,7 @@ export default function Map() {
                         + "\n 2 photos"
                         + "\n 3 videos"
                         + "\n 1 songs"
-                        + `<div><button onClick=${handleClick}> Travel To ${e.features[0].properties.name} </button ></div>`
+                        + `<div><button onClick=${handleClick()}> Travel To ${e.features[0].properties.name} </button ></div>`
                     )
                     .addTo(map.current);
 

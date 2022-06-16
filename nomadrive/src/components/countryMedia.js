@@ -9,7 +9,13 @@ import VideoLibrary from '@mui/icons-material/VideoLibrary';
 
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
+    const [file, setFile] = React.useState();
 
+    function handleChooseFile(e) {
+        console.log(e.target.files);
+        setFile(URL.createObjectURL(e.target.files[0]));
+        console.log(file);
+    }
     return (
         <div>
             <div className="heading">
@@ -17,6 +23,9 @@ export default function CountryMedia() {
 
             </div>
             <div>
+                <h2>Add Image:</h2>
+                <input type="file" onChange={handleChooseFile} />
+                <img src={file} />
                 <Box sx={{ pb: 7 }}>
                     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
