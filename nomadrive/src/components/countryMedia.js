@@ -6,12 +6,13 @@ import Paper from '@mui/material/Paper'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Collections from '@mui/icons-material/Collections';
 import VideoLibrary from '@mui/icons-material/VideoLibrary';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+
 
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
     const [file, setFile] = React.useState();
-
+    let location = useLocation();
     function handleChooseFile(e) {
         console.log(e.target.files);
         setFile(URL.createObjectURL(e.target.files[0]));
@@ -26,7 +27,7 @@ export default function CountryMedia() {
     return (
         <div>
             <div className="heading">
-                <h1>CountryMedia</h1>
+                <h1>{location.state.countryName}</h1>
 
             </div>
             <div>

@@ -15,8 +15,8 @@ export default function Map() {
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
 
     let navigate = useNavigate();
-    function handleClick() {
-        navigate('/CountryMedia', { replace: true });
+    function handleClick(countryName) {
+        navigate('/CountryMedia', { state: { countryName: countryName } }, { replace: true });
     }
 
     useEffect(() => {
@@ -77,7 +77,7 @@ export default function Map() {
             // When a click event occurs on a feature in the world layer, open a popup at the
             // location of the click, with description HTML from its properties.
             map.current.on('click', 'world-fills', function (e) {
-
+                this.countryName = e.features[0].properties.name;
                 var clickedLatitude = e.lngLat.wrap().lng;
                 var clickedLongitude = e.lngLat.wrap().lat;
 
@@ -91,18 +91,28 @@ export default function Map() {
                     bearing: 7,
                     essential: true // this animation is considered essential with respect to prefers-reduced-motion
                 });
-
+                var popup = document.createElement("popup");
+                var title = document.createTextNode(this.countryName);
+                var button = document.createElement('BUTTON');
+                var text = document.createTextNode("Travel to " + this.countryName);
+                button.appendChild(text);
+                popup.appendChild(title);
+                popup.appendChild(button);
+                let countryName = this.countryName;
+                button.onclick = function () {
+                    handleClick(countryName)
+                };
                 new maplibregl.Popup()
                     .setLngLat(e.lngLat)
-                    .setHTML(e.features[0].properties.name
-                        + "\n 2 photos"
-                        + "\n 3 videos"
-                        + "\n 1 songs"
-                        + `<div><button onClick=${handleClick()}> Travel To ${e.features[0].properties.name} </button ></div>`
-                    )
+                    // .setHTML(this.countryName
+                    //     + "\n 2 photos"
+                    //     + "\n 3 videos"
+                    //     + "<div>"
+                    //       + `<button onClick=${handleClick(this.countryName)}> Travel To ${this.countryName} </button >`
+                    //     + "</div>"
+                    // )
+                    .setDOMContent(popup)
                     .addTo(map.current);
-
-
             });
 
             // Change the cursor to a pointer when the mouse is over the world layer.
@@ -156,7 +166,6 @@ export default function Map() {
 
     return (
         <div className="map-wrap">
-            <button onClick={handleClick}> Travel To </button >
 
             <div ref={mapContainer} className="map" />
         </div>
