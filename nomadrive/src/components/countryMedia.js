@@ -6,6 +6,7 @@ import Paper from '@mui/material/Paper'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Collections from '@mui/icons-material/Collections';
 import VideoLibrary from '@mui/icons-material/VideoLibrary';
+import { useNavigate } from "react-router-dom";
 
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
@@ -16,6 +17,12 @@ export default function CountryMedia() {
         setFile(URL.createObjectURL(e.target.files[0]));
         console.log(file);
     }
+
+    let navigate = useNavigate();
+    function handleHomePage() {
+        navigate('/', { replace: true });
+    }
+
     return (
         <div>
             <div className="heading">
@@ -26,6 +33,10 @@ export default function CountryMedia() {
                 <h2>Add Image:</h2>
                 <input type="file" onChange={handleChooseFile} />
                 <img src={file} />
+
+                <button onClick={handleHomePage}> HomePage </button >
+            </div>
+            <div>
                 <Box sx={{ pb: 7 }}>
                     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
