@@ -5,7 +5,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 const Navbar = ({ toggle }) => {
   let location = useLocation();
   let country_url = "";
-  console.log(location)
   if (location.state === null) country_url = "";
   else country_url = 'https://countryflagsapi.com/svg/' + location.state.code;
 

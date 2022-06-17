@@ -16,7 +16,6 @@ export default function Map() {
 
     let navigate = useNavigate();
     function handleClick(countryName, code) {
-        console.log(code)
         navigate('/CountryMedia', { state: { countryName: countryName, code: code } }, { replace: true });
     }
 
