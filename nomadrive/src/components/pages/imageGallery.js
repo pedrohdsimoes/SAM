@@ -1,4 +1,4 @@
-import { ProGallery } from 'pro-gallery';
+/*import { ProGallery } from 'pro-gallery';
 import 'pro-gallery/dist/statics/main.css';
 
 export function ImageGallery() {
@@ -70,4 +70,4 @@ export function ImageGallery() {
             scrollingElement={scrollingElement}
         />
     );
-}
+}*/

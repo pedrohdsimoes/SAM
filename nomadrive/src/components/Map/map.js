@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
-import geojson from './custom.geo.json'
+import geojson from '../Map/custom.geo.json'
 import { useNavigate } from "react-router-dom";
 
 
@@ -15,8 +15,9 @@ export default function Map() {
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
 
     let navigate = useNavigate();
-    function handleClick(countryName) {
-        navigate('/CountryMedia', { state: { countryName: countryName } }, { replace: true });
+    function handleClick(countryName, code) {
+        console.log(code)
+        navigate('/CountryMedia', { state: { countryName: countryName, code: code } }, { replace: true });
     }
 
     useEffect(() => {
@@ -78,6 +79,7 @@ export default function Map() {
             // location of the click, with description HTML from its properties.
             map.current.on('click', 'world-fills', function (e) {
                 this.countryName = e.features[0].properties.name;
+                this.code = e.features[0].properties.iso_n3;
                 var clickedLatitude = e.lngLat.wrap().lng;
                 var clickedLongitude = e.lngLat.wrap().lat;
 
@@ -99,8 +101,9 @@ export default function Map() {
                 popup.appendChild(title);
                 popup.appendChild(button);
                 let countryName = this.countryName;
+                let code = this.code;
                 button.onclick = function () {
-                    handleClick(countryName)
+                    handleClick(countryName, code)
                 };
                 new maplibregl.Popup()
                     .setLngLat(e.lngLat)
@@ -138,7 +141,8 @@ export default function Map() {
                         );
                     }
                     hoveredStateId = e.features[0].id;
-                    // console.log("ID: " + hoveredStateId)
+                    let code = e.features[0].properties.iso_n3;
+                    navigate('/map', { state: { code: code } })
                     // console.log("CONTINENT: " + e.features[0].properties.continent)
                     map.current.setFeatureState(
                         { id: hoveredStateId, source: 'world' },
