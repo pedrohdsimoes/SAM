@@ -31,14 +31,14 @@ export default function CountryMedia() {
     }
 
     return (
-        <div>
+        <div >
             <div className="heading" >
-                <h1 style={{ fontSize: '30px', backgroundImage: `url(${country_url})`, backgroundSize: 'cover', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent', display: 'inline-block', WebkitTextStroke: '0.65px', WebkitTextStrokeColor: '#ffffff', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>{location.state.countryName.toUpperCase()}
+                <h1 style={{marginLeft: '2%' ,marginTop: '8px' ,fontSize: '30px', backgroundImage: `url(${country_url})`, backgroundSize: 'cover', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent', display: 'inline-block', WebkitTextStroke: '0.65px', WebkitTextStrokeColor: '#ffffff', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>{location.state.countryName.toUpperCase()}
                     {/* <img style={{ height: '40px', paddingLeft: "10px" }} src='https://countryflagsapi.com/svg/pt'></img> */}
 
                 </h1>
-                <IconButton style={{ float: 'right' }} onClick={handleHomePage}>
-                    <TravelExploreIcon sx={{ color: red[500] }} fontSize="large" />
+                <IconButton style={{ float: 'right', marginRight: '2%'}} onClick={handleHomePage}>
+                    <TravelExploreIcon sx={{ color: '#256ce1' }} fontSize="large" />
                 </IconButton>
             </div>
 
