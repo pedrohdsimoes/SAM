@@ -11,8 +11,8 @@ const Navbar = ({toggle}) => {
             </NavLink>
             <Bars onClick={toggle}/>
             <NavMenu>
+                <NavLink to="/map"> Map </NavLink>
                 <NavLink to="/about"> About </NavLink>
-                <NavLink to="/contact-us"> Contact Us </NavLink>
                 <NavLink to="/sign-up"> Sign Up </NavLink>
                 <NavBtnLink to="/signin">Sign In</NavBtnLink>
             </NavMenu>
