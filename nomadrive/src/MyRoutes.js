@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Routes, Route } from "react-router-dom";
-import HomePage from "./components/pages/homePage";
-import CountryMedia from "./components/pages/countryMedia";
-import MapPage from "./components/pages/mapPage";
+import HomePage from "./components/pages/homePage/homePage";
+import CountryMedia from "./components/pages/countryMedia/countryMedia";
+import MapPage from "./components/pages/mapPage/mapPage";
 import SigninPage from "./components/pages/signin";
-import About from "./components/pages/about";
+import About from "./components/pages/About/about";
 import Signup from "./components/pages/signup";
 
 

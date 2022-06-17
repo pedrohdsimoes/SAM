@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Map from '../Map/map.js';
+import Map from '../../Map/map.js';
 
 
 
