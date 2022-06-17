@@ -1,73 +1,77 @@
-/*import { ProGallery } from 'pro-gallery';
-import 'pro-gallery/dist/statics/main.css';
+import React, { useState, useEffect } from 'react'
+import app from '../../firebase/firebase.js';
+import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 
-export function ImageGallery() {
+export default function ImageGallery() {
 
-    // Add your images here...
-    const items = [
-        { // Image item:
-            itemId: 'sample-id',
-            mediaUrl: 'https://i.picsum.photos/id/674/200/300.jpg?hmac=kS3VQkm7AuZdYJGUABZGmnNj_3KtZ6Twgb5Qb9ITssY',
-            metaData: {
-                type: 'image',
-                height: 200,
-                width: 100,
-                title: 'sample-title',
-                description: 'sample-description',
-                focalPoint: [0, 0],
-                link: {
-                    url: 'http://example.com',
-                    target: '_blank'
-                },
-            }
-        },
-        { // Another Image item:
-            itemId: 'differentItem',
-            mediaUrl: 'https://i.picsum.photos/id/1003/1181/1772.jpg?hmac=oN9fHMXiqe9Zq2RM6XT-RVZkojgPnECWwyEF1RvvTZk',
-            metaData: {
-                type: 'image',
-                height: 300,
-                width: 600,
-                title: 'sample-title',
-                description: 'sample-description',
-                focalPoint: [0, 0],
-                link: {
-                    url: 'http://example.com',
-                    target: '_blank'
-                },
-            }
-        },
+    const [image, setImage] = useState(null);
+    const [url, setUrl] = useState('');
+    const [files, setFiles] = useState();
 
-    ]
+    useEffect(() => {
+        const fetchImages = async () => {
+            let storage = getStorage(app);
+            let result = await listAll(ref(storage, 'folder/'));
+
+            let urlPromises = result.items.map(imageRef => getDownloadURL(imageRef));
+            console.log(urlPromises)
+            return Promise.all(urlPromises);
+
+        }
+
+        const loadImages = async () => {
+            const urls = await fetchImages();
+            setFiles(urls);
+        }
+        loadImages();
+    }, []);
+
+    console.log(files)
+
+    function handleChange(e) {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0])
+            console.log(image);
+        }
+    }
+
+    function handleUpload() {
+        let file = image;
+        var storage = getStorage(app);
+        var storageRef = ref(storage, 'folder/' + file.name);
+        uploadBytes(storageRef, file).then((snapshot) => {
+            console.log('Uploaded file!');
+            // var progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes)) * 100
+            // this.setState({ progress })
+
+        }, (error) => {
+            throw error
+        }, () => {
 
 
-    // The options of the gallery (from the playground current state)
-    const options = {
-        galleryLayout: 0,
-        videoSound: true,
-        videoPlay: 'onClick',
-        imageHoverAnimation: 'ZOOM_IN',
-    };
-
-    // The size of the gallery container. The images will fit themselves in it
-    const container = {
-        width: window.innerWidth,
-        height: window.innerHeight
-    };
-
-    // The eventsListener will notify you anytime something has happened in the gallery.
-    const eventsListener = (eventName, eventData) => console.log({ eventName, eventData });
-
-    // The scrollingElement is usually the window, if you are scrolling inside another element, suplly it here
-    const scrollingElement = window;
+        })
+        getDownloadURL(ref(storageRef))
+            .then((url) => {
+                console.log("URL: " + url);
+                setUrl(url);
+            })
+    }
 
     return (
-        <ProGallery
-            items={items}
-            options={options}
-            container={container}
-            eventsListener={eventsListener}
-            scrollingElement={scrollingElement}
-        />
-    );
-}*/
+        <div className="App">
+            <h4>upload image</h4>
+
+            <input type="file" id="file" onChange={handleChange} />
+
+
+            <button className="button" onClick={handleUpload}>Upload</button>
+            <img
+                className="ref"
+                src={url || "https://via.placeholder.com/400x300"}
+                alt="Uploaded Images"
+                height="300"
+                width="400"
+            />
+        </div>
+    )
+}
