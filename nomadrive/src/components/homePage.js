@@ -1,13 +1,13 @@
-import React from 'react';
-import Navbar from './navbar.js';
+import React, {useState} from 'react';
 import Map from './map.js';
 
-
-export default function HomePage() {
-    return (
-        <div>
-            <Navbar />
-            <Map />
-        </div>
-    );
+const Home = () => {
+  return (
+    <>
+        <Map />
+    </>
+  )
 }
+
+export default Home
+
