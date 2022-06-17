@@ -10,7 +10,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { IconButton } from '@mui/material';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-//import { ImageGallery } from './imageGallery';
+import ImageGallery from './imageGallery';
 
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
@@ -59,7 +59,7 @@ export default function CountryMedia() {
 
                     </div>
                     <img src={file} />
-                    {/* <ImageGallery /> */}
+                    <ImageGallery />
                     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
                             style={{ color: '11222c' }}
