@@ -39,12 +39,12 @@ export default function CountryMedia() {
         loadImages();
     }, []);
 
-    //console.log(files)
-    let choose = 0;
+    console.log(files)
+
     function handleChooseFile(e) {
         if (e.target.files[0]) {
             setImage(e.target.files[0])
-            choose = 1;
+
         }
     }
 
@@ -55,7 +55,7 @@ export default function CountryMedia() {
         var storageRef = ref(storage, `${location.state.countryName.toUpperCase()}/` + file.name);
         uploadBytes(storageRef, file).then((snapshot) => {
             console.log('Uploaded file!');
-            choose = 0;
+
         })
 
     }
