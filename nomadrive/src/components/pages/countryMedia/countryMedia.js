@@ -16,12 +16,12 @@ import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/
 
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
-    const [file, setFile] = React.useState();
     let location = useLocation();
     const country_url = 'https://countryflagsapi.com/svg/' + location.state.code;
     const [image, setImage] = useState(null);
     const [files, setFiles] = useState('');
 
+    //Gets Images from firebase and sets URLs in array: files
     useEffect(() => {
         const fetchImages = async () => {
             let storage = getStorage(app);
@@ -39,7 +39,7 @@ export default function CountryMedia() {
         loadImages();
     }, []);
 
-    console.log(files)
+
 
     function handleChooseFile(e) {
         if (e.target.files[0]) {
@@ -50,7 +50,6 @@ export default function CountryMedia() {
 
     function handleUpload() {
         let file = image;
-        console.log("up " + file)
         var storage = getStorage(app);
         var storageRef = ref(storage, `${location.state.countryName.toUpperCase()}/` + file.name);
         uploadBytes(storageRef, file).then((snapshot) => {
@@ -97,7 +96,7 @@ export default function CountryMedia() {
 
 
                     </div>
-                    <ImageGallery />
+                    <ImageGallery files={files} />
                     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
                             style={{ color: '11222c' }}
