@@ -97,8 +97,7 @@ export default function CountryMedia() {
 
 
                     </div>
-                    <img src={file} />
-                    {/* <ImageGallery /> */}
+                    <ImageGallery />
                     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
                             style={{ color: '11222c' }}
