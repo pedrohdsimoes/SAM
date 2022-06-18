@@ -1,13 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal, ModalGateway } from "react-images";
 
 export default function ImageGallery(files) {
+
     const photos = [];
     for (let i in files.files) {
         let json = JSON.stringify({ src: files.files[i], width: 4, height: 3 }, null, 4);
         photos.push(JSON.parse(json));
     }
+    console.log("teste " + photos)
 
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
