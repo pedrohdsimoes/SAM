@@ -94,12 +94,13 @@ export default function Map() {
                     essential: true // this animation is considered essential with respect to prefers-reduced-motion
                 });
                 var popup = document.createElement("popup");
-                var title = document.createTextNode(this.countryName);
+                var title = document.createTextNode(this.countryName + "   ");
                 var button = document.createElement('BUTTON');
                 var text = document.createTextNode("Travel to " + this.countryName);
                 button.appendChild(text);
                 popup.appendChild(title);
                 popup.appendChild(button);
+                button.classList.add("country_btn");
                 let countryName = this.countryName;
                 let code = this.code;
                 button.onclick = function () {
