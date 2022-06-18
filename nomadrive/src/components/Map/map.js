@@ -6,6 +6,7 @@ import geojson from '../Map/custom.geo.json'
 import { useNavigate } from "react-router-dom";
 
 
+
 export default function Map() {
     const mapContainer = useRef(null);
     const map = useRef(null);
