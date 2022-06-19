@@ -6,9 +6,8 @@ import Paper from '@mui/material/Paper'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Collections from '@mui/icons-material/Collections';
 import VideoLibrary from '@mui/icons-material/VideoLibrary';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { IconButton } from '@mui/material';
-import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ImageGallery from '../imageGallery';
 import app from '../../../firebase/firebase.js';
@@ -21,13 +20,11 @@ export default function CountryMedia() {
     const [image, setImage] = useState(null);
     const [files, setFiles] = useState('');
     const [progress, setProgress] = useState(0);
-    var uploaded = 0;
     //Gets Images from firebase and sets URLs in array: files
 
     const fetchImages = async () => {
         let storage = getStorage(app);
         let result = await listAll(ref(storage, `${location.state.countryName.toUpperCase()}/`));
-
         let urlPromises = result.items.map(imageRef => getDownloadURL(imageRef));
         return Promise.all(urlPromises);
 
@@ -62,11 +59,6 @@ export default function CountryMedia() {
 
     }
 
-    let navigate = useNavigate();
-    function handleHomePage() {
-        navigate('/map', { replace: true });
-    }
-
     return (
         <div >
             <div className="heading" >
@@ -74,9 +66,6 @@ export default function CountryMedia() {
 
                 </h1>
 
-                <IconButton style={{ float: 'right' }} onClick={handleHomePage}>
-                    <TravelExploreIcon sx={{ color: 'rgb(17, 154, 65)' }} fontSize="large" />
-                </IconButton>
                 <IconButton style={{ float: 'right' }} onClick={handleUpload}>
                     <CloudUploadIcon sx={{ color: '#eec023' }} fontSize="large" />
                 </IconButton>
