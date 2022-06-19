@@ -36,9 +36,10 @@ export default function LoginForm() {
             <button className='form_button'>Log In</button>
 
         </form>
+
         // <div className='form_other'>
         //     <a href='#'>forgot your password?</a>
-        //     <a href='/signup'>Join Now</a>
+        //     <a href='/signup'> You don't have an account? Join Now! </a>
         // </div>
 
     );
