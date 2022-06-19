@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "react-images": "^0.6.7",
+    "react-photo-gallery": "^8.0.0"
+  }
+}
