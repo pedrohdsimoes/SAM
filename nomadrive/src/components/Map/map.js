@@ -14,7 +14,6 @@ export default function Map() {
     const [lat] = useState(35.6844);
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
-
     let navigate = useNavigate();
     function handleClick(countryName, code) {
         navigate('/CountryMedia', { state: { countryName: countryName, code: code } }, { replace: true });
@@ -51,7 +50,7 @@ export default function Map() {
                 'source': 'world',
                 'layout': {},
                 'paint': {
-                    'fill-color': color,
+                    'fill-color': '#eec023',
                     'fill-opacity': [
                         'case',
                         ['boolean', ['feature-state', 'hover'], false],
@@ -68,8 +67,8 @@ export default function Map() {
                 'source': 'world',
                 'layout': {},
                 'paint': {
-                    'line-color': color,
-                    'line-width': 1
+                    'line-color': '#11222c',
+                    'line-width': 1.5
 
                 }
             });
