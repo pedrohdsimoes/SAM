@@ -10,37 +10,43 @@ export default function LoginForm() {
             [e.target.name]: e.target.value,
         });
     };
-    
+
     const handleSubmit = (event) => {
         event.preventDefault();
         // setErrors(validationForm(values));
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <div id="container1">
+            <div className='login-wrapper'>
+                <div>
+                    <h2 className="headerTitle">Login</h2>
+                </div>
+                
+                <form>
+                    <div className='row'>
+                        <label>Email</label>
+                        <input type='email' placeholder='Enter your email' name='email' value={values.email} onChange={handleChange} />
+                    </div>
 
-            <div className='form-inner'>
-                <h2> Login </h2>
+                    <div className='row'>
+                        <label>Password</label>
+                        <input type='password' placeholder='Enter your password' name='password' value={values.password} onChange={handleChange} />
+                    </div>
+
+                    <div id="button" class="row">
+                        <button onClick={handleSubmit}>Log In</button>
+
+                    </div>
+
+                    <div className='alternativeLogin'>
+                        {/* <a href='#'>forgot your password?</a> */}
+                        <a href='/signup'> You don't have an account? Join Now! </a>
+                    </div>
+                </form>
+
             </div>
-
-            <div className='form-group'>
-                <input type='email' required placeholder="Enter your email" name='email' value={values.email} onChange={handleChange} />
-                <label>Email</label>
-            </div>
-
-            <div className='form-group'>
-                <input type='password' required placeholder="Enter your password" name='password' value={values.password} onChange={handleChange} />
-                <label>Password</label>
-            </div>
-
-            <button className='form_button'>Log In</button>
-
-        </form>
-
-        // <div className='form_other'>
-        //     <a href='#'>forgot your password?</a>
-        //     <a href='/signup'> You don't have an account? Join Now! </a>
-        // </div>
+        </div>
 
     );
 }

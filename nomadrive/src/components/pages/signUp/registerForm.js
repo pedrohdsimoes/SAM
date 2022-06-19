@@ -21,7 +21,7 @@ const RegisterForm = ({submitForm}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setErrors(validationForm(values));
+        setErrors(validationForm(values,1));
         setDataIsCorrect(true);
     }
 
@@ -37,7 +37,7 @@ const RegisterForm = ({submitForm}) => {
                 <div>
                     <h2 className='title'> Create Account </h2>
                 </div>
-                <form className='from-wapper'>
+                <form className='form-wapper'>
                     <div className='firstName'>
                         <label className='label'>First Name</label>
                         <input className='input' type='text' name='firstname' value={values.firstname} onChange={handleChange} />
@@ -73,11 +73,11 @@ const RegisterForm = ({submitForm}) => {
                         <button className='submit' onClick={handleSubmit}>Sign Up</button>
                     </div>
 
-                    <div id="alternativeLogin">
+                    <div id="alternativeReg">
                         <label>Or sign in with:</label>
                         <div id="iconGroup" >
-                            < FaTwitter />
-                            <FaFacebook />
+                            <FaTwitter/>
+                            <FaFacebook/>
                             <FaGoogle />
                         </div>
                     </div>
