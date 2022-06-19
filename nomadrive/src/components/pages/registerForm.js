@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import validationForm from './validationForm';
 import { FaTwitter, FaFacebook, FaGoogle } from 'react-icons/fa'
 
-export default function RegisterForm() {
-
-    const [errors, setErrors] = useState({});
+const RegisterForm = ({submitForm}) => {
 
     const [values, setValues] = useState({
         firstname: '', lastname: '', email: '', password: '', confirmpassword: ''
     });
+
+    const [errors, setErrors] = useState({});
+    const [dataIsCorrect, setDataIsCorrect] = useState(false);
 
     const handleChange = (e) => {
         setValues({
@@ -21,7 +22,14 @@ export default function RegisterForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
         setErrors(validationForm(values));
+        setDataIsCorrect(true);
     }
+
+    useEffect(() => {
+        if (Object.keys(errors).length === 0 && dataIsCorrect) {
+            submitForm(true)
+        }
+    }, [errors]);
 
     return (
         <div className="container">
@@ -78,3 +86,5 @@ export default function RegisterForm() {
         </div>
     );
 }
+
+export default RegisterForm
