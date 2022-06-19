@@ -34,7 +34,7 @@ export default function LoginForm() {
                         <input type='password' placeholder='Enter your password' name='password' value={values.password} onChange={handleChange} />
                     </div>
 
-                    <div id="button" class="row">
+                    <div id="button" className='row'>
                         <button onClick={handleSubmit}>Log In</button>
 
                     </div>
