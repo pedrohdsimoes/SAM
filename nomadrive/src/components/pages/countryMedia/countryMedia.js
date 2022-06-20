@@ -21,7 +21,7 @@ export default function CountryMedia() {
     const [files, setFiles] = useState('');
     const [progress, setProgress] = useState(0);
     //Gets Images from firebase and sets URLs in array: files
-
+    console.log("Location: "+location.state.userID)
     const fetchImages = async () => {
         let storage = getStorage(app);
         let result = await listAll(ref(storage, `${location.state.countryName.toUpperCase()}/`));

@@ -1,11 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from 'firebase/auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaTwitter, FaFacebook, FaGoogle } from 'react-icons/fa'
+import { IconButton } from '@mui/material';
 
 export default function LoginForm() {
+
+    const googleProvider = new GoogleAuthProvider();
+    const facebookProvider = new FacebookAuthProvider();
+    const twitterProvider = new TwitterAuthProvider();
+
     let navigate = useNavigate();
+
+    // After Signed in , if you try to sign in again goes to Map
+    useEffect(() => {
+        let authToken = sessionStorage.getItem('Auth Token')
+
+        if (authToken) {
+            navigate('/map')
+        }
+    }, [])
+
     const [values, setValues] = useState({ email: '', password: '' });
 
     const handleChange = (e) => {
@@ -26,14 +43,106 @@ export default function LoginForm() {
                 sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
             })
             .catch((error) => {
-                if(error.code === 'auth/wrong-password'){
+                if (error.code === 'auth/wrong-password') {
                     toast.error('Please check the Password');
-                  }
-                  if(error.code === 'auth/user-not-found'){
+                }
+                if (error.code === 'auth/user-not-found') {
                     toast.error('Please check the Email');
-                  }
+                }
             })
         // setErrors(validationForm(values,2));
+    }
+
+    const handleGoogleAuth = (event) => {
+        event.preventDefault();
+        const authentication = getAuth();
+
+        signInWithPopup(authentication, googleProvider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                sessionStorage.setItem('Auth Token', result._tokenResponse.refreshToken)
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                console.log("MAIL: "+user.email)
+                let userID = user.email;
+                navigate('/CountryMedia', { state: { userID: userID } })
+                console.log(user)
+                navigate('/map')
+                toast('Welcome back ' + ' !',
+                    { position: toast.POSITION.TOP_CENTER })
+
+                // ...
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                // ...
+            });
+    }
+
+    const handleTwitterAuth = (event) => {
+        event.preventDefault();
+        const authentication = getAuth();
+
+        signInWithPopup(authentication, twitterProvider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = TwitterAuthProvider.credentialFromResult(result);
+                sessionStorage.setItem('Auth Token', result._tokenResponse.refreshToken)
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                toast('Welcome back ' + user.displayName + ' !',
+                    { position: toast.POSITION.TOP_CENTER })
+
+                // ...
+                navigate('/map')
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = TwitterAuthProvider.credentialFromError(error);
+                // ...
+            });
+
+    }
+
+    const handleFacebookAuth = (event) => {
+        event.preventDefault();
+        const authentication = getAuth();
+
+        signInWithPopup(authentication, facebookProvider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential = FacebookAuthProvider.credentialFromResult(result);
+                sessionStorage.setItem('Auth Token', result._tokenResponse.refreshToken)
+                const token = credential.accessToken;
+                // The signed-in user info.
+                const user = result.user;
+                toast('Welcome back ' + user.displayName + ' !',
+                    { position: toast.POSITION.TOP_CENTER })
+                // ...
+                navigate('/map')
+            }).catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.customData.email;
+                // The AuthCredential type that was used.
+                const credential = FacebookAuthProvider.credentialFromError(error);
+                // ...
+            });
+
     }
 
     return (
@@ -42,7 +151,7 @@ export default function LoginForm() {
                 <div>
                     <h2 className="headerTitle">Sign In</h2>
                 </div>
-                
+
                 <form>
                     <div className='row'>
                         <label>Email</label>
@@ -56,7 +165,21 @@ export default function LoginForm() {
 
                     <div id="button" className='row'>
                         <button onClick={handleSubmit}>Sign In</button>
+                    </div>
 
+                    <div id="alternativeReg">
+                        <label>Or sign in with:</label>
+                        <div id="iconGroup" >
+                            <IconButton onClick={handleGoogleAuth} sx={{ color: '#eec023' }}>
+                                <FaGoogle fontSize="40px" />
+                            </IconButton>
+                            {/* <IconButton onClick={handleFacebookAuth} sx={{ color: '#eec023' }}>
+                                <FaFacebook fontSize="40px" />
+                            </IconButton>
+                            <IconButton sx={{ color: '#eec023' }}>
+                                <FaTwitter fontSize="40px" />
+                            </IconButton> */}
+                        </div>
                     </div>
 
                     <div className='alternativeLogin'>
