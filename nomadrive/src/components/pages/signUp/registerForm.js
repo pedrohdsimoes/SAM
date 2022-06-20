@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
 import validationForm from './validationForm';
 import { FaTwitter, FaFacebook, FaGoogle } from 'react-icons/fa'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const RegisterForm = ({submitForm}) => {
+const RegisterForm = ({ submitForm }) => {
+    let navigate = useNavigate();
+    // After Signed up , if you try to sign up again goes to Map
+    useEffect(() => {
+        let authToken = sessionStorage.getItem('Auth Token')
+
+        if (authToken) {
+            navigate('/map')
+        }
+    }, [])
 
     const [values, setValues] = useState({
         firstname: '', lastname: '', email: '', password: '', confirmpassword: ''
@@ -10,7 +23,11 @@ const RegisterForm = ({submitForm}) => {
 
     const [errors, setErrors] = useState({});
     const [dataIsCorrect, setDataIsCorrect] = useState(false);
-
+    // LOGOUT => TODO: Criar botao para dar logout (talvez num user profile) 
+    // const handleLogout = () => {
+    //     sessionStorage.removeItem('Auth Token');
+    //     navigate('/signin')
+    // }
     const handleChange = (e) => {
         setValues({
             ...values,
@@ -18,18 +35,35 @@ const RegisterForm = ({submitForm}) => {
         });
     };
 
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        setErrors(validationForm(values,1));
+        setErrors(validationForm(values, 1));
         setDataIsCorrect(true);
+
+        const authentication = getAuth();
+
+        createUserWithEmailAndPassword(authentication, values.email, values.password)
+            .then((response) => {
+                // Confirm that account is created
+                // submitForm(true)
+                navigate('/map')
+                sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+
+            })
+            .catch((error) => {
+                console.log(error)
+                if (error.code === 'auth/email-already-in-use') {
+                    toast.error('Account already exists with this email');
+                }
+            })
     }
 
-    useEffect(() => {
-        if (Object.keys(errors).length === 0 && dataIsCorrect) {
-            submitForm(true)
-        }
-    }, [errors]);
+    // TODO: acrescentar condição do response
+    // useEffect(() => {
+    //     if (Object.keys(errors).length === 0 && dataIsCorrect) {
+    //         submitForm(true)
+    //     }
+    // }, [errors]);
 
     return (
         <div className="container">
@@ -58,14 +92,14 @@ const RegisterForm = ({submitForm}) => {
 
                     <div className='password'>
                         <label className='label'>Password</label>
-                        <input className='input' type='password' name='password' value={values.password} onChange={handleChange} />
+                        <input className='input' type='password' name='password' autoComplete='on' value={values.password} onChange={handleChange} />
                     </div>
                     {errors.password && <p className='error'>{errors.password}</p>}
 
 
                     <div className='confirmPassword'>
                         <label className='label'>Confirm Password</label>
-                        <input className='input' type='password' name='confirmpassword' value={values.confirmpassword} onChange={handleChange} />
+                        <input className='input' type='password' name='confirmpassword' autoComplete='on' value={values.confirmpassword} onChange={handleChange} />
                     </div>
                     {errors.confirmpassword && <p className='error'>{errors.confirmpassword}</p>}
 
@@ -76,11 +110,12 @@ const RegisterForm = ({submitForm}) => {
                     <div id="alternativeReg">
                         <label>Or sign in with:</label>
                         <div id="iconGroup" >
-                            <FaTwitter/>
-                            <FaFacebook/>
+                            <FaTwitter />
+                            <FaFacebook />
                             <FaGoogle />
                         </div>
                     </div>
+                    <ToastContainer />
                 </form>
             </div>
         </div>

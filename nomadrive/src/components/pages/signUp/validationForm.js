@@ -1,11 +1,11 @@
 
-const validationForm = (values, int) => {
+const validationForm = (values, id) => {
 
     let errors = {};
     // 1 -> Register Form
     // 2 -> Login Form
 
-    if (int === 1) {
+    if (id === 1) {
         if (!values.firstname) {
             errors.firstname = 'First Name required.'
         }
@@ -37,7 +37,7 @@ const validationForm = (values, int) => {
         }
     }
 
-    // else if (int === 2) {
+    // else if (id === 2) {
     //     if (!values.email) {
     //         errors.email = 'Email required.'
     //     }

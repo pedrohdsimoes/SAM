@@ -20,6 +20,18 @@ export default function Map() {
     }
 
     useEffect(() => {
+        let authToken = sessionStorage.getItem('Auth Token')
+
+        if (authToken) {
+            navigate('/map')
+        }
+
+        if (!authToken) {
+            navigate('/signin')
+        }
+    }, [])
+
+    useEffect(() => {
         if (map.current) return; //stops map from intializing more than once
         map.current = new maplibregl.Map({
             container: mapContainer.current,
