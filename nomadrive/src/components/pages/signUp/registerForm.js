@@ -53,7 +53,10 @@ const RegisterForm = ({ submitForm }) => {
             .then((response) => {
                 // Confirm that account is created
                 // submitForm(true)
-                navigate('/map')
+
+                let userID = response.user.uid;
+
+                navigate('/map', { state: { userID: userID } })
                 sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
 
             })
@@ -77,7 +80,9 @@ const RegisterForm = ({ submitForm }) => {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
-                navigate('/map')
+                let userID = user.uid;
+
+                navigate('/map', { state: { userID: userID } })
                 toast('Welcome back ' + user.displayName + ' !',
                     { position: toast.POSITION.TOP_CENTER })
 
@@ -206,7 +211,7 @@ const RegisterForm = ({ submitForm }) => {
                         <label>Or sign in with:</label>
                         <div id="iconGroup" >
                             <IconButton onClick={handleGoogleAuth} sx={{ color: '#eec023' }}>
-                                <FaGoogle  fontSize="40px" />
+                                <FaGoogle fontSize="40px" />
                             </IconButton>
                             {/* <IconButton onClick={handleFacebookAuth} sx={{ color: '#eec023' }}>
                                 <FaFacebook fontSize="40px" />

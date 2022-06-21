@@ -3,7 +3,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
 import geojson from '../Map/custom.geo.json'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 
@@ -15,8 +15,11 @@ export default function Map() {
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
     let navigate = useNavigate();
+    let location = useLocation();
+
     function handleClick(countryName, code) {
-        navigate('/CountryMedia', { state: { countryName: countryName, code: code } }, { replace: true });
+        let userID = location.state.userID;
+        navigate('/CountryMedia', { state: { countryName: countryName, code: code, userID: userID } }, { replace: true });
     }
 
     useEffect(() => {

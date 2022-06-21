@@ -11,6 +11,7 @@ export default function LoginForm() {
     const googleProvider = new GoogleAuthProvider();
     const facebookProvider = new FacebookAuthProvider();
     const twitterProvider = new TwitterAuthProvider();
+    const [values, setValues] = useState({ email: '', password: '' });
 
     let navigate = useNavigate();
 
@@ -19,11 +20,13 @@ export default function LoginForm() {
         let authToken = sessionStorage.getItem('Auth Token')
 
         if (authToken) {
+
             navigate('/map')
+
         }
     }, [])
 
-    const [values, setValues] = useState({ email: '', password: '' });
+
 
     const handleChange = (e) => {
         setValues({
@@ -38,16 +41,18 @@ export default function LoginForm() {
 
         signInWithEmailAndPassword(authentication, values.email, values.password)
             .then((response) => {
-                // console.log(response)              
-                navigate('/map')
+
+                let userID = response.user.uid;
+
+                navigate('/map', { state: { userID: userID } })
                 sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
             })
             .catch((error) => {
                 if (error.code === 'auth/wrong-password') {
-                    toast.error('Please check the Password');
+                    toast.error('Password in not correct');
                 }
                 if (error.code === 'auth/user-not-found') {
-                    toast.error('Please check the Email');
+                    toast.error('No account with this Email');
                 }
             })
         // setErrors(validationForm(values,2));
@@ -65,11 +70,10 @@ export default function LoginForm() {
                 const token = credential.accessToken;
                 // The signed-in user info.
                 const user = result.user;
-                console.log("MAIL: "+user.email)
-                let userID = user.email;
-                navigate('/CountryMedia', { state: { userID: userID } })
-                console.log(user)
-                navigate('/map')
+
+                let userID = user.uid;
+
+                navigate('/map', { state: { userID: userID } })
                 toast('Welcome back ' + ' !',
                     { position: toast.POSITION.TOP_CENTER })
 
