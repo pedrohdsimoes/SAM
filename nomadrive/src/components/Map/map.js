@@ -28,9 +28,24 @@ export default function Map() {
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
     let navigate = useNavigate();
+    let location = useLocation();
+
     function handleClick(countryName, code) {
-        navigate('/CountryMedia', { state: { countryName: countryName, code: code } }, { replace: true });
+        let userID = location.state.userID;
+        navigate('/CountryMedia', { state: { countryName: countryName, code: code, userID: userID } }, { replace: true });
     }
+
+    useEffect(() => {
+        let authToken = sessionStorage.getItem('Auth Token')
+
+        if (authToken) {
+            navigate('/map')
+        }
+
+        if (!authToken) {
+            navigate('/signin')
+        }
+    }, [])
 
     useEffect(() => {
         if (map.current) return; //stops map from intializing more than once
@@ -63,7 +78,7 @@ export default function Map() {
                 'source': 'world',
                 'layout': {},
                 'paint': {
-                    'fill-color': color,
+                    'fill-color': '#eec023',
                     'fill-opacity': [
                         'case',
                         ['boolean', ['feature-state', 'hover'], false],
@@ -80,8 +95,8 @@ export default function Map() {
                 'source': 'world',
                 'layout': {},
                 'paint': {
-                    'line-color': color,
-                    'line-width': 1
+                    'line-color': '#11222c',
+                    'line-width': 1.5
 
                 }
             });

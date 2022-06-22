@@ -6,9 +6,8 @@ import Paper from '@mui/material/Paper'
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Collections from '@mui/icons-material/Collections';
 import VideoLibrary from '@mui/icons-material/VideoLibrary';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { IconButton } from '@mui/material';
-import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ImageGallery from '../imageGallery';
 import app from '../../../firebase/firebase.js';
@@ -17,17 +16,15 @@ import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
     let location = useLocation();
+    console.log(location)
     const country_url = 'https://countryflagsapi.com/svg/' + location.state.code;
     const [image, setImage] = useState(null);
     const [files, setFiles] = useState('');
     const [progress, setProgress] = useState(0);
-    var uploaded = 0;
-    //Gets Images from firebase and sets URLs in array: files
-
+    //Gets Images from firebase and sets URLs in array: filesß
     const fetchImages = async () => {
         let storage = getStorage(app);
-        let result = await listAll(ref(storage, `${location.state.countryName.toUpperCase()}/`));
-
+        let result = await listAll(ref(storage, `${location.state.userID}/${location.state.countryName.toUpperCase()}/`));
         let urlPromises = result.items.map(imageRef => getDownloadURL(imageRef));
         return Promise.all(urlPromises);
 
@@ -53,18 +50,13 @@ export default function CountryMedia() {
     function handleUpload() {
         let file = image;
         var storage = getStorage(app);
-        var storageRef = ref(storage, `${location.state.countryName.toUpperCase()}/` + file.name);
+        var storageRef = ref(storage, `${location.state.userID}/${location.state.countryName.toUpperCase()}/` + file.name);
 
         uploadBytes(storageRef, file).then((snapshot) => {
             console.log('Uploaded file!');
             loadImages();
         })
 
-    }
-
-    let navigate = useNavigate();
-    function handleHomePage() {
-        navigate('/map', { replace: true });
     }
 
     return (
@@ -74,9 +66,6 @@ export default function CountryMedia() {
 
                 </h1>
 
-                <IconButton style={{ float: 'right' }} onClick={handleHomePage}>
-                    <TravelExploreIcon sx={{ color: 'rgb(17, 154, 65)' }} fontSize="large" />
-                </IconButton>
                 <IconButton style={{ float: 'right' }} onClick={handleUpload}>
                     <CloudUploadIcon sx={{ color: '#eec023' }} fontSize="large" />
                 </IconButton>
@@ -102,7 +91,7 @@ export default function CountryMedia() {
                     <ImageGallery files={files} />
                     <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
-                            style={{ color: '11222c' }}
+                            style={{ color: '#11222c' }}
                             showLabels
                             value={value}
                             onChange={(event, newValue) => {

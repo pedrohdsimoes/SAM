@@ -1,0 +1,107 @@
+#container1 {
+    /* background: linear-gradient(135deg, #11222c, #f3cf06); */
+    background: linear-gradient(0deg, #f3cf0667, #11222c);
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-wrapper {
+    max-width: 500px;
+    min-width: 350px;
+    min-height: 470px;
+    max-height: 700px;
+    width: 30%;
+    height: 60%;
+    margin: 50px auto;
+    background-color: #FFFFFF;
+    border-radius: 35px;
+}
+
+.headerTitle {
+    color: #256ce1;
+    text-align: center;
+    font-family: 'open sans', sans-serif;
+    padding: 2rem 0;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+    max-width: 100%;
+}
+
+.row input {
+    width: 80%;
+    box-sizing: border-box;
+    border: none;
+    font-size: 1.2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    box-shadow: inset 0px -3px 0px 0px rgba(187, 187, 187, 0.2);
+    transition: box-shadow 0.2s ease-in;
+}
+
+.row input:focus {
+    box-shadow: inset 0px -3px 0px 0px rgba(34, 193, 195, 0.7);
+    outline: none;
+}
+
+.row input::-webkit-input-placeholder {
+    opacity: 1;
+    transition: opacity 0.25s ease-out;
+}
+
+.row input:hover::-webkit-input-placeholder,
+.row input:focus::-webkit-input-placeholder {
+    opacity: 0;
+}
+
+.row label {
+    align-self: start;
+    padding-left: 4.5rem;
+    padding-bottom: 0.5rem;
+    color: rgba(187, 187, 187, 0.9);
+}
+
+.row button {
+    display: flex;
+    text-transform: uppercase;
+    font-size: 20px;
+    border-radius: 25px;
+    color: white;
+    padding: 10px 50px;
+    background: linear-gradient(to right, #201dcf, #099aee);
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px,
+        rgba(0, 0, 0, 0.22);
+    margin: auto;
+    margin-top: 3.5%;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.1s;
+}
+
+.row button:hover {
+    opacity: 0.8;
+}
+
+#button {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.alternativeLogin {
+    text-align: center;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    margin-top: 0rem;
+}
