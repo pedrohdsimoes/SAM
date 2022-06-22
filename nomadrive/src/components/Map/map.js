@@ -3,18 +3,30 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './map.css';
 import geojson from '../Map/custom.geo.json'
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
+import app from "../../firebase/firebase.js";
+import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import { async } from '@firebase/util';
 
 
 export default function Map() {
+
+    const sizeMedia = async (countryName) => {
+        let storage = getStorage(app);
+        let result = await listAll(ref(storage, `${countryName.toUpperCase()}/`));
+        let total = result.items.length;
+        // console.log(result);
+        // console.log(result.items);
+        // console.log(result.items.length);
+        return total;
+    }
+
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [lng] = useState(-4.753);
     const [lat] = useState(35.6844);
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
-
     let navigate = useNavigate();
     function handleClick(countryName, code) {
         navigate('/CountryMedia', { state: { countryName: countryName, code: code } }, { replace: true });
@@ -30,7 +42,7 @@ export default function Map() {
         });
         // Navigation UI
         map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
-
+      
         var hoveredStateId = null;
 
         map.current.on('load', function () {
@@ -82,7 +94,6 @@ export default function Map() {
                 this.code = e.features[0].properties.iso_n3;
                 var clickedLatitude = e.lngLat.wrap().lng;
                 var clickedLongitude = e.lngLat.wrap().lat;
-
                 //Fly animation to the country clicked
                 map.current.flyTo({
                     center: [
@@ -93,16 +104,27 @@ export default function Map() {
                     bearing: 7,
                     essential: true // this animation is considered essential with respect to prefers-reduced-motion
                 });
-                var popup = document.createElement("popup");
-                var title = document.createTextNode(this.countryName + "   ");
-                var button = document.createElement('BUTTON');
-                var text = document.createTextNode("Travel to " + this.countryName);
-                button.appendChild(text);
-                popup.appendChild(title);
-                popup.appendChild(button);
-                button.classList.add("country_btn");
+
                 let countryName = this.countryName;
                 let code = this.code;
+                let n_photos = sizeMedia(countryName);
+                console.log(n_photos);
+                var popup = document.createElement("popup");
+                // var title = document.createTextNode(this.countryName + "   ");
+                var photos = document.createTextNode("Photos: " + n_photos);
+                var br = document.createElement("br");
+                var videos = document.createTextNode("Videos: " + this.n_videos);
+                var button = document.createElement('BUTTON');
+                var text = document.createTextNode("Travel to " + this.countryName);
+
+                
+                button.appendChild(text);
+                // popup.appendChild(title);
+                popup.appendChild(photos);
+                popup.appendChild(br);
+                popup.appendChild(videos);
+                popup.appendChild(button);
+                button.classList.add("country_btn");
                 button.onclick = function () {
                     handleClick(countryName, code)
                 };
