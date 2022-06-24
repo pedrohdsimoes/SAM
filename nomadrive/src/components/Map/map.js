@@ -11,9 +11,9 @@ import { async } from '@firebase/util';
 
 export default function Map() {
 
-    const sizeMedia = async (countryName) => {
+    const sizeMedia = async (userID, countryName) => {
         let storage = getStorage(app);
-        let result = await listAll(ref(storage, `${countryName.toUpperCase()}/`));
+        let result = await listAll(ref(storage, `${userID}/${countryName.toUpperCase()}/`));
         let total = result.items.length;
         // console.log(result);
         // console.log(result.items);
@@ -31,8 +31,9 @@ export default function Map() {
     let location = useLocation();
 
     function handleClick(countryName, code) {
-        let userID = location.state.userID;
-        navigate('/CountryMedia', { state: { countryName: countryName, code: code, userID: userID } }, { replace: true });
+
+
+        navigate('/CountryMedia', { state: { countryName: countryName, code: code } }, { replace: true });
     }
 
     useEffect(() => {
@@ -57,7 +58,7 @@ export default function Map() {
         });
         // Navigation UI
         map.current.addControl(new maplibregl.NavigationControl(), 'top-right');
-      
+
         var hoveredStateId = null;
 
         map.current.on('load', function () {
@@ -122,7 +123,8 @@ export default function Map() {
 
                 let countryName = this.countryName;
                 let code = this.code;
-                let n_photos = sizeMedia(countryName);
+                let userID = sessionStorage.getItem('userID');
+                let n_photos = sizeMedia(userID, countryName);
                 console.log(n_photos);
                 var popup = document.createElement("popup");
                 // var title = document.createTextNode(this.countryName + "   ");
@@ -132,9 +134,8 @@ export default function Map() {
                 var button = document.createElement('BUTTON');
                 var text = document.createTextNode("Travel to " + this.countryName);
 
-                
+
                 button.appendChild(text);
-                // popup.appendChild(title);
                 popup.appendChild(photos);
                 popup.appendChild(br);
                 popup.appendChild(videos);
@@ -145,13 +146,6 @@ export default function Map() {
                 };
                 new maplibregl.Popup()
                     .setLngLat(e.lngLat)
-                    // .setHTML(this.countryName
-                    //     + "\n 2 photos"
-                    //     + "\n 3 videos"
-                    //     + "<div>"
-                    //       + `<button onClick=${handleClick(this.countryName)}> Travel To ${this.countryName} </button >`
-                    //     + "</div>"
-                    // )
                     .setDOMContent(popup)
                     .addTo(map.current);
             });

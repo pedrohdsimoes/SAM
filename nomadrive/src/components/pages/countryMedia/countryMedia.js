@@ -21,10 +21,12 @@ export default function CountryMedia() {
     const [image, setImage] = useState(null);
     const [files, setFiles] = useState('');
     const [progress, setProgress] = useState(0);
+    const userID = sessionStorage.getItem('userID');
     //Gets Images from firebase and sets URLs in array: filesß
     const fetchImages = async () => {
         let storage = getStorage(app);
-        let result = await listAll(ref(storage, `${location.state.userID}/${location.state.countryName.toUpperCase()}/`));
+
+        let result = await listAll(ref(storage, `${userID}/${location.state.countryName.toUpperCase()}/`));
         let urlPromises = result.items.map(imageRef => getDownloadURL(imageRef));
         return Promise.all(urlPromises);
 
@@ -50,7 +52,7 @@ export default function CountryMedia() {
     function handleUpload() {
         let file = image;
         var storage = getStorage(app);
-        var storageRef = ref(storage, `${location.state.userID}/${location.state.countryName.toUpperCase()}/` + file.name);
+        var storageRef = ref(storage, `${userID}/${location.state.countryName.toUpperCase()}/` + file.name);
 
         uploadBytes(storageRef, file).then((snapshot) => {
             console.log('Uploaded file!');
