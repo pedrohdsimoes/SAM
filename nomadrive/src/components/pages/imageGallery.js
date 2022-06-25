@@ -7,9 +7,9 @@ import { IconButton } from '@mui/material';
 
 
 export default function ImageGallery(files) {
-
     const photos = [];
     for (let i in files.files) {
+
         let json = JSON.stringify({ src: files.files[i], width: 4, height: 3 }, null, 4);
         photos.push(JSON.parse(json));
     }
@@ -17,33 +17,31 @@ export default function ImageGallery(files) {
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
     const [currentSrc, setCurrentSrc] = useState('');
-    const [selectAll, setSelectAll] = useState(false);
+    let selectedUrls = [];
 
-    const toggleSelectAll = () => {
-        setSelectAll(!selectAll);
-    };
+    let imageRenderer = useCallback(
 
-    const imageRenderer = useCallback(
-
-        ({ index, selected, left, top, key, photo }) => (
-            <SelectedImage
-                selected={selectAll ? true : false}
+        ({ index, left, top, key, photo }) => (
+            < SelectedImage
+                selected={files.selectAll ? true : false}
                 key={key}
                 margin={"2px"}
                 index={index}
                 photo={photo}
                 left={left}
                 top={top}
+                selectedUrls={selectedUrls}
             />
         ),
-        [selectAll]
+        [files.selectAll]
     );
+    if (!files.deleteIcon) imageRenderer = null;
 
     const openLightbox = useCallback((event, { photo, index }) => {
         setCurrentImage(index);
         setViewerIsOpen(true);
-        setCurrentSrc(photo.src);
-        console.log(currentSrc)
+
+
     }, []);
 
     const closeLightbox = () => {

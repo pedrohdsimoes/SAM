@@ -48,7 +48,8 @@ const SelectedImage = ({
     direction,
     top,
     left,
-    selected
+    selected,
+    selectedUrls
 }) => {
     const [isSelected, setIsSelected] = useState(selected);
 
@@ -65,7 +66,18 @@ const SelectedImage = ({
     }
 
     const handleOnClick = e => {
+        if (!isSelected) {
+            selectedUrls.push(photo.src)
+        }
+        else {
+            if (selectedUrls.length > 0) {
+                selectedUrls.splice(selectedUrls.indexOf(photo.src), 1);
+            }
+
+        }
+        console.log(selectedUrls)
         setIsSelected(!isSelected);
+
     };
 
     useEffect(() => {
