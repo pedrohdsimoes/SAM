@@ -125,12 +125,12 @@ export default function Map() {
                 let code = this.code;
                 let userID = sessionStorage.getItem('userID');
                 let n_photos = sizeMedia(userID, countryName);
+                let n_videos = 0;
                 console.log(n_photos);
                 var popup = document.createElement("popup");
-                // var title = document.createTextNode(this.countryName + "   ");
                 var photos = document.createTextNode("Photos: " + n_photos);
                 var br = document.createElement("br");
-                var videos = document.createTextNode("Videos: " + this.n_videos);
+                var videos = document.createTextNode("Videos: " + n_videos);
                 var button = document.createElement('BUTTON');
                 var text = document.createTextNode("Travel to " + this.countryName);
 
@@ -139,6 +139,7 @@ export default function Map() {
                 popup.appendChild(photos);
                 popup.appendChild(br);
                 popup.appendChild(videos);
+                popup.appendChild(br);
                 popup.appendChild(button);
                 button.classList.add("country_btn");
                 button.onclick = function () {

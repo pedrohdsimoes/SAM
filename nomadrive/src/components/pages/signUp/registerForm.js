@@ -57,6 +57,7 @@ const RegisterForm = ({ submitForm }) => {
                 let userID = response.user.uid;
                 sessionStorage.setItem('userID', userID)
                 sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+                navigate('/map')
 
             })
             .catch((error) => {
@@ -81,6 +82,7 @@ const RegisterForm = ({ submitForm }) => {
                 const user = result.user;
                 let userID = user.uid;
                 sessionStorage.setItem('userID', userID)
+                navigate('/map')
 
                 // ...
             }).catch((error) => {

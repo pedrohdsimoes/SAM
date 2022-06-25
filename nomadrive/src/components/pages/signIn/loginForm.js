@@ -46,6 +46,7 @@ export default function LoginForm() {
                 sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
                 let userID = response.user.uid;
                 sessionStorage.setItem('userID', userID)
+                navigate('/map')
 
             })
             .catch((error) => {
@@ -75,7 +76,7 @@ export default function LoginForm() {
                 let userID = user.uid;
                 sessionStorage.setItem('userID', userID)
 
-
+                navigate('/map')
 
                 // ...
             }).catch((error) => {

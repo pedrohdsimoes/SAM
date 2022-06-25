@@ -16,7 +16,6 @@ import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
     let location = useLocation();
-    console.log(location)
     const country_url = 'https://countryflagsapi.com/svg/' + location.state.code;
     const [image, setImage] = useState(null);
     const [files, setFiles] = useState('');

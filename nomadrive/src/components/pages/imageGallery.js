@@ -26,7 +26,6 @@ export default function ImageGallery(files) {
     const imageRenderer = useCallback(
 
         ({ index, selected, left, top, key, photo }) => (
-            selected ? console.log("U " + photo.src) : null,
             <SelectedImage
                 selected={selectAll ? true : false}
                 key={key}
