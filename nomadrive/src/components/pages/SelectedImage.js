@@ -76,6 +76,7 @@ const SelectedImage = ({
 
         }
         console.log(selectedUrls)
+        sessionStorage.setItem('selectedUrls', JSON.stringify(selectedUrls))
         setIsSelected(!isSelected);
 
     };

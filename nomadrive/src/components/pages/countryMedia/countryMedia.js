@@ -38,7 +38,7 @@ export default function CountryMedia() {
         let deleteMenu = document.getElementById("delete_menu");
         let uploadMenu = document.getElementById("upload_menu");
         if (deleteIcon) {
-            setSelectAll(!selectAll);
+            setSelectAll(false);
             deleteMenu.style.display = "none";
             uploadMenu.style.display = "block"
         }
@@ -95,27 +95,35 @@ export default function CountryMedia() {
         var storage = getStorage(app);
 
         if (selectAll) {
-            // for (let i = 0; i < files.length; i++) {
-            //     var storageRef = ref(storage, files[i]);
-            //     // Delete the file
-            //     deleteObject(storageRef).then(() => {
-            //         // File deleted successfully
-            //         if (i == files.length - 1) loadImages();
-            //     }).catch((error) => {
-            //         // Uh-oh, an error occurred!
-            //     });
-            // }
+            for (let i = 0; i < files.length; i++) {
+                var storageRef = ref(storage, files[i]);
+                // Delete the file
+                deleteObject(storageRef).then(() => {
+                    // File deleted successfully
+                    if (i == files.length - 1) {
+                        loadImages();
+                        toggleDelete();
+                    }
+                }).catch((error) => {
+                    // Uh-oh, an error occurred!
+                });
+            }
         } else {
-            // for (let i = 0; i < selectedUrls.length; i++) {
-            //     var storageRef = ref(storage, selectedUrls[i]);
-            //     // Delete the file
-            //     deleteObject(storageRef).then(() => {
-            //         // File deleted successfully
-            //         if (i == files.length - 1) loadImages();
-            //     }).catch((error) => {
-            //         // Uh-oh, an error occurred!
-            //     });
-            // }
+            let selectedUrls = JSON.parse(sessionStorage.getItem('selectedUrls'))
+            console.log(selectedUrls)
+            for (let i = 0; i < selectedUrls.length; i++) {
+                var storageRef = ref(storage, selectedUrls[i]);
+                // Delete the file
+                deleteObject(storageRef).then(() => {
+                    // File deleted successfully
+                    if (i == selectedUrls.length - 1) {
+                        loadImages();
+                        toggleDelete();
+                    }
+                }).catch((error) => {
+                    // Uh-oh, an error occurred!
+                });
+            }
 
         }
 

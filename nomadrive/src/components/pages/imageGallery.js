@@ -19,6 +19,7 @@ export default function ImageGallery(files) {
     const [currentSrc, setCurrentSrc] = useState('');
     let selectedUrls = [];
 
+
     let imageRenderer = useCallback(
 
         ({ index, left, top, key, photo }) => (
