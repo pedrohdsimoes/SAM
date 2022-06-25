@@ -103,6 +103,7 @@ export default function CountryMedia() {
                     if (i == files.length - 1) {
                         loadImages();
                         toggleDelete();
+                        localStorage.removeItem('selectedUrls');
                     }
                 }).catch((error) => {
                     // Uh-oh, an error occurred!
@@ -110,7 +111,6 @@ export default function CountryMedia() {
             }
         } else {
             let selectedUrls = JSON.parse(sessionStorage.getItem('selectedUrls'))
-            console.log(selectedUrls)
             for (let i = 0; i < selectedUrls.length; i++) {
                 var storageRef = ref(storage, selectedUrls[i]);
                 // Delete the file
@@ -119,6 +119,7 @@ export default function CountryMedia() {
                     if (i == selectedUrls.length - 1) {
                         loadImages();
                         toggleDelete();
+                        localStorage.removeItem('selectedUrls');
                     }
                 }).catch((error) => {
                     // Uh-oh, an error occurred!
