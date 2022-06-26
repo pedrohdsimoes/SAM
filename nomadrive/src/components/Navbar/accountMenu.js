@@ -53,7 +53,7 @@ export default function AccountMenu() {
             }
             else {
                 logged = false;
-                console.log("NO USER LOGGED IN")
+                // console.log("NO USER LOGGED IN")
             }
         });
 
