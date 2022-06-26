@@ -7,6 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import app from "../../firebase/firebase.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import { async } from '@firebase/util';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 export default function Map() {
@@ -40,15 +41,21 @@ export default function Map() {
     }
 
     useEffect(() => {
+        let authentication = getAuth();
+        onAuthStateChanged(authentication, (user) => {
+            if (!user) {
+                navigate('/signin')
+            }
+        });
+        
         let authToken = sessionStorage.getItem('Auth Token')
-
-        if (authToken) {
-            navigate('/map')
-        }
-
         if (!authToken) {
             navigate('/signin')
         }
+        else {
+            navigate('/map')
+        }
+
     }, [])
 
     useEffect(() => {
