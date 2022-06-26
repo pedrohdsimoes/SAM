@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from 'firebase/auth'
+import { getAuth, onAuthStateChanged ,signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from 'firebase/auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaTwitter, FaFacebook, FaGoogle } from 'react-icons/fa'
@@ -17,13 +17,22 @@ export default function LoginForm() {
 
     // After Signed in , if you try to sign in again goes to Map
     useEffect(() => {
+
+        let authentication = getAuth();
+        onAuthStateChanged(authentication, (user) => {
+            if (!user) {
+                navigate('/signin')
+            }
+        });
+
         let authToken = sessionStorage.getItem('Auth Token')
-
-        if (authToken) {
-
-            navigate('/map')
-
+        if (!authToken) {
+            navigate('/signin')
         }
+        else {
+            navigate('/map')
+        }
+
     }, [])
 
 

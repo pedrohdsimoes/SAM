@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import validationForm from './validationForm';
 import { FaTwitter, FaFacebook, FaGoogle } from 'react-icons/fa'
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from 'firebase/auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { IconButton } from '@mui/material';
@@ -17,9 +17,18 @@ const RegisterForm = ({ submitForm }) => {
 
     // After Signed up , if you try to sign up again goes to Map
     useEffect(() => {
-        let authToken = sessionStorage.getItem('Auth Token')
+        let authentication = getAuth();
+        onAuthStateChanged(authentication, (user) => {
+            if (!user) {
+                navigate('/signup')
+            }
+        });
 
-        if (authToken) {
+        let authToken = sessionStorage.getItem('Auth Token')
+        if (!authToken) {
+            navigate('/signup')
+        }
+        else {
             navigate('/map')
         }
     }, [])
