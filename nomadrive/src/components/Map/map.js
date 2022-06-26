@@ -21,6 +21,9 @@ export default function Map() {
         return total;
     }
 
+
+
+
     const mapContainer = useRef(null);
     const map = useRef(null);
     const [lng] = useState(-4.753);
@@ -124,12 +127,20 @@ export default function Map() {
                 let countryName = this.countryName;
                 let code = this.code;
                 let userID = sessionStorage.getItem('userID');
-                let n_photos = sizeMedia(userID, countryName);
+
+                const printPhotos = () => {
+                    sizeMedia(userID, countryName).then((r) => {
+                        console.log(r);
+                        return r;
+                    });
+                };
+                let n_photos = printPhotos();
                 let n_videos = 0;
-                console.log(n_photos);
+
                 var popup = document.createElement("popup");
                 var photos = document.createTextNode("Photos: " + n_photos);
                 var br = document.createElement("br");
+                var br2 = document.createElement("br");
                 var videos = document.createTextNode("Videos: " + n_videos);
                 var button = document.createElement('BUTTON');
                 var text = document.createTextNode("Travel to " + this.countryName);
@@ -139,7 +150,7 @@ export default function Map() {
                 popup.appendChild(photos);
                 popup.appendChild(br);
                 popup.appendChild(videos);
-                popup.appendChild(br);
+                popup.appendChild(br2);
                 popup.appendChild(button);
                 button.classList.add("country_btn");
                 button.onclick = function () {
