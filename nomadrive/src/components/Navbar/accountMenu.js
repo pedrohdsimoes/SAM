@@ -73,7 +73,7 @@ export default function AccountMenu() {
                         sx={{ ml: 4 }}
 
                     >
-                        <Avatar sx={{ width: 32, height: 32 }}>{P} </Avatar>
+                        <Avatar sx={{ width: 32, height: 32 }}>P</Avatar>
                     </IconButton>
 
                 </Box>
