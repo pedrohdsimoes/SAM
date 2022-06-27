@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged ,signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from 'firebase/auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -198,7 +198,8 @@ export default function LoginForm() {
 
                     <div className='alternativeLogin'>
                         {/* <a href='#'>forgot your password?</a> */}
-                        <a href='/signup'> You don't have an account? Join Now! </a>
+                        <NavLink to="/signup"> You don't have an account? Join Now! </NavLink>
+                        {/* <a href='/signup'> You don't have an account? Join Now! </a> */}
                     </div>
                 </form>
                 <ToastContainer />
