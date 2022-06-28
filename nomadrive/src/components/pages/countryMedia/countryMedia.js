@@ -16,8 +16,53 @@ import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } f
 import Zoom from '@mui/material/Zoom';
 import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
-import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import Tooltip from '@mui/material/Tooltip';
+import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Typography from '@mui/material/Typography';
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}));
+
+const BootstrapDialogTitle = (props) => {
+    const { children, onClose, ...other } = props;
+
+    return (
+        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+            {children}
+            {onClose ? (
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            ) : null}
+        </DialogTitle>
+    );
+};
+
+BootstrapDialogTitle.propTypes = {
+    children: PropTypes.node,
+    onClose: PropTypes.func.isRequired,
+};
 
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
@@ -28,6 +73,17 @@ export default function CountryMedia() {
     const userID = sessionStorage.getItem('userID');
     const [deleteIcon, setDeleteIcon] = useState(false);
     const [selectAll, setSelectAll] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [preview, setPreview] = useState("");
+
+    const handleOpenUploadPage = () => {
+        setOpen(true);
+    };
+    const handleCloseUploadPage = () => {
+        setOpen(false);
+        setPreview("")
+    };
+
 
     const toggleSelectAll = () => {
         setSelectAll(!selectAll);
@@ -73,8 +129,11 @@ export default function CountryMedia() {
     function handleChooseFile(e) {
         if (e.target.files[0]) {
             setImage(e.target.files[0])
+            if (e.target.files[0].type.includes("image/")) setPreview(URL.createObjectURL(e.target.files[0]));
+            else if (e.target.files[0].type.includes("audio/")) setPreview("https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
 
         }
+
     }
 
 
@@ -87,6 +146,7 @@ export default function CountryMedia() {
         uploadBytes(storageRef, file).then((snapshot) => {
             console.log('Uploaded file!');
             loadImages();
+            handleCloseUploadPage();
         })
 
     }
@@ -137,29 +197,61 @@ export default function CountryMedia() {
                 <h1 style={{ fontSize: '55px', backgroundImage: `url(${country_url})`, backgroundSize: 'cover', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent', display: 'inline-block', WebkitTextStroke: '0.65px', WebkitTextStrokeColor: '#ffffff', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>{location.state.countryName.toUpperCase()}
 
                 </h1>
+                <BootstrapDialog
+                    onClose={handleCloseUploadPage}
+                    aria-labelledby="customized-dialog-title"
+                    open={open}
+                >
+                    <BootstrapDialogTitle id="customized-dialog-title" onClose={handleCloseUploadPage}>
+                        UPLOAD YOUR FILES
+                    </BootstrapDialogTitle>
+                    <Box
+                        id="preview_img"
+                        component="img"
+                        sx={{
+                            height: 333,
+                            width: 550,
+                            objectFit: "contain"
+                        }}
+                        src={preview}
+                    />
+
+                    <DialogActions>
+                        <Button
+                            variant="outlined" autoFocus
+                            component="label"
+                            style={{ marginRight: '5px' }}
+                        >
+                            CHOOSE FILE
+                            <input
+                                style={{ display: 'none' }}
+                                type="file" onChange={handleChooseFile}
+                                accept="audio/*,video/*,image/*" id="myFileInput"
+                                hidden
+                            />
+                        </Button>
+                        <Button variant="outlined" autoFocus onClick={handleUpload}>
+                            UPLOAD
+                        </Button>
+                    </DialogActions>
+                </BootstrapDialog>
                 <Stack id="upload_menu" direction="row" spacing={0.3} style={{ float: 'right' }}>
                     <Zoom in={!deleteIcon}>
-                        <IconButton >
-                            <label className="custom-file-upload">
-                                <input
-                                    style={{ display: 'none' }}
-                                    type="file" onChange={handleChooseFile}
-                                    accept="audio/*,video/*,image/*" id="myFileInput"
-                                />
-                                <CloudUploadIcon sx={{ color: '#ffffff' }} fontSize="large" />
-                            </label>
-                        </IconButton>
-                    </Zoom>
-                    <Zoom in={!deleteIcon}>
-                        <IconButton onClick={handleUpload}>
-                            <CloudUploadIcon sx={{ color: '#eec023' }} fontSize="large" />
-                        </IconButton>
+                        <Tooltip title="Upload your files">
+                            <IconButton onClick={handleOpenUploadPage}>
+                                <CloudUploadIcon sx={{ color: '#eec023' }} fontSize="large" />
+                            </IconButton>
+                        </Tooltip>
+
+
                     </Zoom>
 
                     <Zoom in={!deleteIcon}>
-                        <IconButton onClick={toggleDelete}>
-                            <DeleteOutlineIcon sx={{ color: 'red' }} fontSize="large" />
-                        </IconButton>
+                        <Tooltip title="Press to select files you want to delete">
+                            <IconButton onClick={toggleDelete}>
+                                <DeleteOutlineIcon sx={{ color: 'red' }} fontSize="large" />
+                            </IconButton>
+                        </Tooltip>
                     </Zoom>
                 </Stack>
 

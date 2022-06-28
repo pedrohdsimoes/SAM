@@ -105,7 +105,6 @@ export default function ImageGallery(files) {
                         backgroundColor: "#eec023",
                         borderRadius: "1rem"
                     }}
-                    autoPlay
                     src={musicSrc}
                     onPlay={(e) => console.log("onPlay")}
                     showSkipControls={true}
