@@ -1,24 +1,49 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal, ModalGateway } from "react-images";
 import SelectedImage from "./SelectedImage";
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { IconButton } from '@mui/material';
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
+import Paper from '@mui/material/Paper'
 
 
 export default function ImageGallery(files) {
-    const photos = [];
-    for (let i in files.files) {
+    const [trackIndex, setTrackIndex] = useState(0);
 
-        let json = JSON.stringify({ src: files.files[i], width: 4, height: 3 }, null, 4);
-        photos.push(JSON.parse(json));
+
+
+    const photos = [];
+    const musicTracks = [];
+    for (let i in files.files) {
+        let jsonPhotos;
+        let jsonMusic;
+        if (files.files[i].includes(".png") || files.files[i].includes(".jpeg") || files.files[i].includes(".jpg")) {
+            jsonPhotos = JSON.stringify({ src: files.files[i], width: 4, height: 3 }, null, 4);
+            photos.push(JSON.parse(jsonPhotos));
+        }
+        else if (files.files[i].includes(".mp3")) {
+            jsonMusic = JSON.stringify({ name: "Kendrick", src: files.files[i] }, null, 4);
+            musicTracks.push(JSON.parse(jsonMusic));
+        }
     }
+
+    const handleClickPrevious = () => {
+        setTrackIndex((currentTrack) =>
+            currentTrack === 0 ? musicTracks.length - 1 : currentTrack - 1
+        );
+    };
+
+    const handleClickNext = () => {
+        setTrackIndex((currentTrack) =>
+            currentTrack < musicTracks.length - 1 ? currentTrack + 1 : 0
+        );
+    };
 
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
-    const [currentSrc, setCurrentSrc] = useState('');
     let selectedUrls = [];
-
 
     let imageRenderer = useCallback(
 
@@ -50,6 +75,10 @@ export default function ImageGallery(files) {
         setViewerIsOpen(false);
     };
 
+
+    var musicSrc;
+    if (musicTracks.length === 0) musicSrc = null;
+    else musicSrc = musicTracks[trackIndex].src;
     return (
         <div>
 
@@ -69,6 +98,26 @@ export default function ImageGallery(files) {
                     </Modal>
                 ) : null}
             </ModalGateway>
+            <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+                <AudioPlayer
+                    style={{
+
+                        backgroundColor: "#eec023",
+                        borderRadius: "1rem"
+                    }}
+                    autoPlay
+                    src={musicSrc}
+                    onPlay={(e) => console.log("onPlay")}
+                    showSkipControls={true}
+                    showJumpControls={false}
+                    // header={`Now playing: ${musicTracks[trackIndex].name}`}
+                    onClickPrevious={handleClickPrevious}
+                    onClickNext={handleClickNext}
+                    onEnded={handleClickNext}
+                // other props here
+                />
+
+            </Paper>
         </div>
     );
 

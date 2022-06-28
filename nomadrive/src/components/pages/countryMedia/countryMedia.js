@@ -16,6 +16,8 @@ import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } f
 import Zoom from '@mui/material/Zoom';
 import CloseIcon from '@mui/icons-material/Close';
 import Stack from '@mui/material/Stack';
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 export default function CountryMedia() {
     const [value, setValue] = React.useState(0);
@@ -26,7 +28,6 @@ export default function CountryMedia() {
     const userID = sessionStorage.getItem('userID');
     const [deleteIcon, setDeleteIcon] = useState(false);
     const [selectAll, setSelectAll] = useState(false);
-
 
     const toggleSelectAll = () => {
         setSelectAll(!selectAll);
@@ -186,7 +187,7 @@ export default function CountryMedia() {
 
                     </div>
                     <ImageGallery files={files} deleteIcon={deleteIcon} selectAll={selectAll} />
-                    <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
+                    {/* <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
                             style={{ color: '#11222c' }}
                             showLabels
@@ -203,7 +204,7 @@ export default function CountryMedia() {
                             <BottomNavigationAction label="Photos" icon={<Collections />} />
                             <BottomNavigationAction label="Videos" icon={<VideoLibrary />} />
                         </BottomNavigation>
-                    </Paper>
+                    </Paper> */}
                 </Box>
             </div>
         </div >
