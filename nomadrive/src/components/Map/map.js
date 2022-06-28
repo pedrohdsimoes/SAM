@@ -31,6 +31,7 @@ export default function Map() {
     const [lat] = useState(35.6844);
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
+    const [nPhotos, setnPhotos] = useState(0);
     let navigate = useNavigate();
     let location = useLocation();
 
@@ -47,7 +48,7 @@ export default function Map() {
                 navigate('/signin')
             }
         });
-        
+
         let authToken = sessionStorage.getItem('Auth Token')
         if (!authToken) {
             navigate('/signin')
@@ -135,13 +136,13 @@ export default function Map() {
                 let code = this.code;
                 let userID = sessionStorage.getItem('userID');
 
-                const printPhotos = () => {
-                    sizeMedia(userID, countryName).then((r) => {
-                        console.log(r);
-                        return r;
-                    });
-                };
-                let n_photos = printPhotos();
+
+                sizeMedia(userID, countryName).then((r) => {
+                    console.log(r);
+                    setnPhotos(r)
+                });
+
+                let n_photos = nPhotos;
                 let n_videos = 0;
 
                 var popup = document.createElement("popup");
