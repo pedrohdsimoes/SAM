@@ -34,6 +34,7 @@ export default function AccountMenu() {
             // Sign-out successful.
             // console.log("LOGOUT")
             logged = false;
+            
             let profile = document.getElementById("profile")
             profile.style.display = "none";
 
@@ -47,6 +48,7 @@ export default function AccountMenu() {
             if (user) {
                 logged = true;
                 // console.log("LOGGED USER: " + user.uid);
+
                 let profile = document.getElementById("profile")
                 if(profile !== null)
                     profile.style.display = "block";
