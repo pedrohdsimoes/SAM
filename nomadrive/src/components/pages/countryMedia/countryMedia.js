@@ -149,8 +149,9 @@ export default function CountryMedia() {
 
         let file = image;
         if (file != null) setLoading(true);
-        if (file.type.includes("audio/")) setAudioName(file.name);
         else toast.error('Choose file before uploading');
+
+        if (file.type.includes("audio/")) setAudioName(file.name);
         var storage = getStorage(app);
         var storageRef = ref(storage, `${userID}/${location.state.countryName.toUpperCase()}/` + file.name);
 
