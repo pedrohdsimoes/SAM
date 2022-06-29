@@ -77,6 +77,7 @@ export default function CountryMedia() {
     const [open, setOpen] = useState(false);
     const [preview, setPreview] = useState("");
     const [loading, setLoading] = useState(false);
+    const [audioName, setAudioName] = useState("");
 
 
 
@@ -148,6 +149,7 @@ export default function CountryMedia() {
 
         let file = image;
         if (file != null) setLoading(true);
+        if (file.type.includes("audio/")) setAudioName(file.name);
         else toast.error('Choose file before uploading');
         var storage = getStorage(app);
         var storageRef = ref(storage, `${userID}/${location.state.countryName.toUpperCase()}/` + file.name);
@@ -156,7 +158,7 @@ export default function CountryMedia() {
         uploadBytes(storageRef, file).then((snapshot) => {
 
             console.log('Uploaded file!');
-
+            setLoading(false);
             loadImages();
 
             handleCloseUploadPage();
@@ -301,7 +303,7 @@ export default function CountryMedia() {
 
 
                     </div>
-                    <ImageGallery files={files} deleteIcon={deleteIcon} selectAll={selectAll} />
+                    <ImageGallery files={files} deleteIcon={deleteIcon} selectAll={selectAll} audioName={audioName} />
                     {/* <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
                         <BottomNavigation
                             style={{ color: '#11222c' }}

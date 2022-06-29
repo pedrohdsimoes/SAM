@@ -24,7 +24,8 @@ export default function ImageGallery(files) {
             photos.push(JSON.parse(jsonPhotos));
         }
         else if (files.files[i].includes(".mp3")) {
-            jsonMusic = JSON.stringify({ name: "Kendrick", src: files.files[i] }, null, 4);
+            console.log(files)
+            jsonMusic = JSON.stringify({ name: "", src: files.files[i] }, null, 4);
             musicTracks.push(JSON.parse(jsonMusic));
         }
     }
@@ -77,8 +78,15 @@ export default function ImageGallery(files) {
 
 
     var musicSrc;
-    if (musicTracks.length === 0) musicSrc = null;
-    else musicSrc = musicTracks[trackIndex].src;
+    var musicName;
+    if (musicTracks.length === 0) {
+        musicSrc = null;
+        musicName = null
+    }
+    else {
+        musicSrc = musicTracks[trackIndex].src;
+        musicName = musicTracks[trackIndex].name
+    }
     return (
         <div>
 
@@ -109,15 +117,10 @@ export default function ImageGallery(files) {
                     onPlay={(e) => console.log("onPlay")}
                     showSkipControls={true}
                     showJumpControls={false}
-                    // header={`Now playing: ${musicTracks[trackIndex].name}`}
+                    header={musicName}
                     onClickPrevious={handleClickPrevious}
                     onClickNext={handleClickNext}
                     onEnded={handleClickNext}
-                    sx={{
-                        ".rhap_button-clear rhap_main-controls-button rhap_skip-button": {
-                            color: "#11222c"
-                        }
-                    }}
                 // other props here
                 />
 

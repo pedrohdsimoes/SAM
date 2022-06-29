@@ -17,6 +17,7 @@
 }
 
 .rhap_volume-indicator,
-.rhap_progress-indicator {
+.rhap_progress-indicator,
+.rhap_progress-filled {
     background: #11222c !important;
 }
