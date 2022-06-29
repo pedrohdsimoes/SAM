@@ -10,12 +10,15 @@ import Paper from '@mui/material/Paper'
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebase/storage";
 import app from '../../firebase/firebase.js';
-
-
+import LoadingButton from '@mui/lab/LoadingButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function ImageGallery(files) {
     const [trackIndex, setTrackIndex] = useState(0);
+    const [loading, setLoading] = useState(false);
+
 
 
 
@@ -52,16 +55,18 @@ export default function ImageGallery(files) {
     let selectedUrls = [];
 
     function handleMusicDelete() {
-
+        setLoading(true);
         var storage = getStorage(app);
         var storageRef = ref(storage, musicTracks[trackIndex].src);
         // Delete the file
         deleteObject(storageRef).then(() => {
             // File deleted successfully
-            // loadImages();
+            setLoading(false);
+            toast.success(`Track ${trackIndex + 1} Deleted`);
 
         }).catch((error) => {
             // Uh-oh, an error occurred!
+            setLoading(false);
         });
 
     }
@@ -99,14 +104,20 @@ export default function ImageGallery(files) {
 
     var musicSrc;
     var musicName;
+    var header;
     if (musicTracks.length === 0) {
         musicSrc = null;
-        musicName = null
+        musicName = null;
+        header = "No Audios to Play"
     }
     else {
         musicSrc = musicTracks[trackIndex].src;
-        musicName = musicTracks[trackIndex].name
+        musicName = musicTracks[trackIndex].name;
+        header = `Track ${trackIndex + 1}`;
     }
+
+
+
     return (
         <div>
 
@@ -137,15 +148,21 @@ export default function ImageGallery(files) {
                     onPlay={(e) => console.log("onPlay")}
                     showSkipControls={true}
                     showJumpControls={false}
-                    header={`Track ${trackIndex + 1}`}
+                    header={header}
                     onClickPrevious={handleClickPrevious}
                     onClickNext={handleClickNext}
                     onEnded={handleClickNext}
                     customAdditionalControls={
                         [
-                            <IconButton onClick={handleMusicDelete}>
-                                <DeleteOutlineIcon fontSize="large" />
-                            </IconButton>,
+                            <LoadingButton
+                                size="large"
+                                onClick={handleMusicDelete}
+                                loading={loading}
+                                loadingPosition="start"
+                                startIcon={<DeleteOutlineIcon />}
+                            >
+
+                            </LoadingButton>,
                             RHAP_UI.LOOP
 
                         ]
@@ -154,6 +171,7 @@ export default function ImageGallery(files) {
                 />
 
             </Paper>
+            <ToastContainer />
         </div>
     );
 
