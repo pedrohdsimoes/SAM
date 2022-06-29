@@ -32,6 +32,8 @@ export default function Map() {
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
     const [nPhotos, setnPhotos] = useState(0);
+    const [countryName, setCountryName] = useState("");
+    const [userId, setUserId] = useState("");
     let navigate = useNavigate();
     let location = useLocation();
 
@@ -58,6 +60,8 @@ export default function Map() {
         }
 
     }, [])
+
+
 
     useEffect(() => {
         if (map.current) return; //stops map from intializing more than once
@@ -117,8 +121,8 @@ export default function Map() {
             // When a click event occurs on a feature in the world layer, open a popup at the
             // location of the click, with description HTML from its properties.
             map.current.on('click', 'world-fills', function (e) {
-                this.countryName = e.features[0].properties.name;
-                this.code = e.features[0].properties.iso_n3;
+                let countryName = e.features[0].properties.name;
+                let code = e.features[0].properties.iso_n3;
                 var clickedLatitude = e.lngLat.wrap().lng;
                 var clickedLongitude = e.lngLat.wrap().lat;
                 //Fly animation to the country clicked
@@ -132,32 +136,29 @@ export default function Map() {
                     essential: true // this animation is considered essential with respect to prefers-reduced-motion
                 });
 
-                let countryName = this.countryName;
-                let code = this.code;
+
                 let userID = sessionStorage.getItem('userID');
+                setCountryName(countryName);
+                setUserId(userID);
 
 
-                sizeMedia(userID, countryName).then((r) => {
-                    console.log(r);
-                    setnPhotos(r)
-                });
 
                 let n_photos = nPhotos;
-                let n_videos = 0;
+                let n_audio = 0;
 
                 var popup = document.createElement("popup");
                 var photos = document.createTextNode("Photos: " + n_photos);
                 var br = document.createElement("br");
                 var br2 = document.createElement("br");
-                var videos = document.createTextNode("Videos: " + n_videos);
+                var audio = document.createTextNode("Audio: " + n_audio);
                 var button = document.createElement('BUTTON');
-                var text = document.createTextNode("Travel to " + this.countryName);
+                var text = document.createTextNode("Travel to " + countryName);
 
 
                 button.appendChild(text);
                 popup.appendChild(photos);
                 popup.appendChild(br);
-                popup.appendChild(videos);
+                popup.appendChild(audio);
                 popup.appendChild(br2);
                 popup.appendChild(button);
                 button.classList.add("country_btn");
@@ -220,6 +221,13 @@ export default function Map() {
 
     });
 
+    useEffect(() => {
+        sizeMedia(userId, countryName).then((r) => {
+            //console.log(r);
+            setnPhotos(r)
+        });
+        // console.log("t " + nPhotos)
+    })
     return (
         <div className="map-wrap">
 
@@ -227,4 +235,3 @@ export default function Map() {
         </div>
     );
 }
-

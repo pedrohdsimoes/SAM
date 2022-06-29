@@ -98,7 +98,7 @@ const SelectedImage = ({
                 {...photo}
                 onClick={handleOnClick}
             />
-            <style>{`.not-selected:hover{outline:2px solid #eec023}`}</style>
+            <style>{`.not-selected:hover{outline:4px solid #eec023}`}</style>
         </div>
     );
 };

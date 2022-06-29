@@ -113,6 +113,11 @@ export default function ImageGallery(files) {
                     onClickPrevious={handleClickPrevious}
                     onClickNext={handleClickNext}
                     onEnded={handleClickNext}
+                    sx={{
+                        ".rhap_button-clear rhap_main-controls-button rhap_skip-button": {
+                            color: "#11222c"
+                        }
+                    }}
                 // other props here
                 />
 

@@ -6,3 +6,17 @@
     text-align: center;
 
 }
+
+.rhap_container svg {
+    color: #11222c
+}
+
+
+#rhap_current-time {
+    color: #11222c
+}
+
+.rhap_volume-indicator,
+.rhap_progress-indicator {
+    background: #11222c !important;
+}

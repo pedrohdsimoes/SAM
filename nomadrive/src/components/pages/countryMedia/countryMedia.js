@@ -22,9 +22,10 @@ import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -75,6 +76,11 @@ export default function CountryMedia() {
     const [selectAll, setSelectAll] = useState(false);
     const [open, setOpen] = useState(false);
     const [preview, setPreview] = useState("");
+    const [loading, setLoading] = useState(false);
+
+
+
+
 
     const handleOpenUploadPage = () => {
         setOpen(true);
@@ -139,13 +145,20 @@ export default function CountryMedia() {
 
 
     function handleUpload() {
+
         let file = image;
+        if (file != null) setLoading(true);
+        else toast.error('Choose file before uploading');
         var storage = getStorage(app);
         var storageRef = ref(storage, `${userID}/${location.state.countryName.toUpperCase()}/` + file.name);
 
+
         uploadBytes(storageRef, file).then((snapshot) => {
+
             console.log('Uploaded file!');
+
             loadImages();
+
             handleCloseUploadPage();
         })
 
@@ -154,7 +167,7 @@ export default function CountryMedia() {
     function handleDelete() {
 
         var storage = getStorage(app);
-
+        let selectedUrls = JSON.parse(sessionStorage.getItem('selectedUrls'))
         if (selectAll) {
             for (let i = 0; i < files.length; i++) {
                 var storageRef = ref(storage, files[i]);
@@ -171,7 +184,7 @@ export default function CountryMedia() {
                 });
             }
         } else {
-            let selectedUrls = JSON.parse(sessionStorage.getItem('selectedUrls'))
+
             for (let i = 0; i < selectedUrls.length; i++) {
                 var storageRef = ref(storage, selectedUrls[i]);
                 // Delete the file
@@ -184,6 +197,7 @@ export default function CountryMedia() {
                     }
                 }).catch((error) => {
                     // Uh-oh, an error occurred!
+                    toast.error('Select the images you want to delete');
                 });
             }
 
@@ -228,12 +242,20 @@ export default function CountryMedia() {
                                 type="file" onChange={handleChooseFile}
                                 accept="audio/*,video/*,image/*" id="myFileInput"
                                 hidden
+                                multiple
                             />
                         </Button>
-                        <Button variant="outlined" autoFocus onClick={handleUpload}>
+                        <LoadingButton
+                            variant="outlined"
+                            onClick={handleUpload}
+                            loading={loading}
+                            loadingPosition="start"
+                            startIcon={<CloudUploadIcon />}
+                        >
                             UPLOAD
-                        </Button>
+                        </LoadingButton>
                     </DialogActions>
+                    <ToastContainer />
                 </BootstrapDialog>
                 <Stack id="upload_menu" direction="row" spacing={0.3} style={{ float: 'right' }}>
                     <Zoom in={!deleteIcon}>
@@ -247,7 +269,7 @@ export default function CountryMedia() {
                     </Zoom>
 
                     <Zoom in={!deleteIcon}>
-                        <Tooltip title="Press to select files you want to delete">
+                        <Tooltip title="Click to select the files you want to delete">
                             <IconButton onClick={toggleDelete}>
                                 <DeleteOutlineIcon sx={{ color: 'red' }} fontSize="large" />
                             </IconButton>
@@ -269,6 +291,7 @@ export default function CountryMedia() {
                         </IconButton>
                     </Zoom>
                 </Stack>
+                <ToastContainer />
             </div>
 
             <div>

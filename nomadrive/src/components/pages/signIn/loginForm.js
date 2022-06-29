@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged ,signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from 'firebase/auth'
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, signInWithPopup } from 'firebase/auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaTwitter, FaFacebook, FaGoogle } from 'react-icons/fa'
@@ -100,64 +100,6 @@ export default function LoginForm() {
             });
     }
 
-    // const handleTwitterAuth = (event) => {
-    //     event.preventDefault();
-    //     const authentication = getAuth();
-
-    //     signInWithPopup(authentication, twitterProvider)
-    //         .then((result) => {
-    //             // This gives you a Google Access Token. You can use it to access the Google API.
-    //             const credential = TwitterAuthProvider.credentialFromResult(result);
-    //             sessionStorage.setItem('Auth Token', result._tokenResponse.refreshToken)
-    //             const token = credential.accessToken;
-    //             // The signed-in user info.
-    //             const user = result.user;
-    //             toast('Welcome back ' + user.displayName + ' !',
-    //                 { position: toast.POSITION.TOP_CENTER })
-
-    //             // ...
-    //             navigate('/map')
-    //         }).catch((error) => {
-    //             // Handle Errors here.
-    //             const errorCode = error.code;
-    //             const errorMessage = error.message;
-    //             // The email of the user's account used.
-    //             const email = error.customData.email;
-    //             // The AuthCredential type that was used.
-    //             const credential = TwitterAuthProvider.credentialFromError(error);
-    //             // ...
-    //         });
-
-    // }
-
-    // const handleFacebookAuth = (event) => {
-    //     event.preventDefault();
-    //     const authentication = getAuth();
-
-    //     signInWithPopup(authentication, facebookProvider)
-    //         .then((result) => {
-    //             // This gives you a Google Access Token. You can use it to access the Google API.
-    //             const credential = FacebookAuthProvider.credentialFromResult(result);
-    //             sessionStorage.setItem('Auth Token', result._tokenResponse.refreshToken)
-    //             const token = credential.accessToken;
-    //             // The signed-in user info.
-    //             const user = result.user;
-    //             toast('Welcome back ' + user.displayName + ' !',
-    //                 { position: toast.POSITION.TOP_CENTER })
-    //             // ...
-    //             navigate('/map')
-    //         }).catch((error) => {
-    //             // Handle Errors here.
-    //             const errorCode = error.code;
-    //             const errorMessage = error.message;
-    //             // The email of the user's account used.
-    //             const email = error.customData.email;
-    //             // The AuthCredential type that was used.
-    //             const credential = FacebookAuthProvider.credentialFromError(error);
-    //             // ...
-    //         });
-
-    // }
 
     return (
         <div id="container1">
