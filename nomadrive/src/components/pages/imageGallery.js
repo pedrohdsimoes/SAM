@@ -4,9 +4,14 @@ import Carousel, { Modal, ModalGateway } from "react-images";
 import SelectedImage from "./SelectedImage";
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import { IconButton } from '@mui/material';
-import AudioPlayer from "react-h5-audio-player";
+import AudioPlayer, { RHAP_UI } from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import Paper from '@mui/material/Paper'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { getStorage, ref, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebase/storage";
+import app from '../../firebase/firebase.js';
+
+
 
 
 export default function ImageGallery(files) {
@@ -45,6 +50,21 @@ export default function ImageGallery(files) {
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
     let selectedUrls = [];
+
+    function handleMusicDelete() {
+
+        var storage = getStorage(app);
+        var storageRef = ref(storage, musicTracks[trackIndex].src);
+        // Delete the file
+        deleteObject(storageRef).then(() => {
+            // File deleted successfully
+            // loadImages();
+
+        }).catch((error) => {
+            // Uh-oh, an error occurred!
+        });
+
+    }
 
     let imageRenderer = useCallback(
 
@@ -117,10 +137,19 @@ export default function ImageGallery(files) {
                     onPlay={(e) => console.log("onPlay")}
                     showSkipControls={true}
                     showJumpControls={false}
-                    header={musicName}
+                    header={`Track ${trackIndex + 1}`}
                     onClickPrevious={handleClickPrevious}
                     onClickNext={handleClickNext}
                     onEnded={handleClickNext}
+                    customAdditionalControls={
+                        [
+                            <IconButton onClick={handleMusicDelete}>
+                                <DeleteOutlineIcon fontSize="large" />
+                            </IconButton>,
+                            RHAP_UI.LOOP
+
+                        ]
+                    }
                 // other props here
                 />
 

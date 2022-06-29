@@ -97,6 +97,7 @@ export default function CountryMedia() {
     };
 
     const toggleDelete = () => {
+        console.log(files)
         setDeleteIcon(!deleteIcon);
 
         let deleteMenu = document.getElementById("delete_menu");
@@ -129,7 +130,7 @@ export default function CountryMedia() {
     }
     useEffect(() => {
         loadImages();
-    }, []);
+    });
 
 
 
@@ -207,6 +208,7 @@ export default function CountryMedia() {
         }
 
     }
+
 
     return (
         <div >
