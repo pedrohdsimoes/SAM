@@ -210,9 +210,9 @@ export default function CountryMedia() {
     return (
         <div >
             <div className="heading" >
-                <h1 style={{ fontSize: '55px', backgroundImage: `url(${country_url})`, backgroundSize: 'cover', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent', display: 'inline-block', WebkitTextStroke: '0.65px', WebkitTextStrokeColor: '#ffffff', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>{location.state.countryName.toUpperCase()}
-
-                </h1>
+                <h1 style={{ fontSize: '55px', backgroundImage: `url(${country_url})`, backgroundSize: 'cover', backgroundClip: 'text', WebkitBackgroundClip: 'text', color: 'transparent', display: 'inline-block', WebkitTextStroke: '0.65px', WebkitTextStrokeColor: '#ffffff', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>{location.state.countryName.toUpperCase()}</h1>
+            </div>
+            <div className="files">
                 <BootstrapDialog
                     onClose={handleCloseUploadPage}
                     aria-labelledby="customized-dialog-title"
@@ -288,7 +288,7 @@ export default function CountryMedia() {
                         <Button variant="outlined" startIcon={<DeleteOutlineIcon />} color="error" onClick={handleDelete}>DELETE</Button>
                     </Zoom>
                     <Zoom in={deleteIcon}>
-                        <IconButton style={{ padding: '2px' }} onClick={toggleDelete}>
+                        <IconButton style={{ padding: '8px' }} onClick={toggleDelete}>
                             <CloseIcon sx={{ color: '#eec023' }} fontSize="large" />
                         </IconButton>
                     </Zoom>
