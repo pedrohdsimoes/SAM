@@ -11,19 +11,14 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
 
 export default function Map() {
-
+    "use strict";
     const sizeMedia = async (userID, countryName) => {
         let storage = getStorage(app);
         let result = await listAll(ref(storage, `${userID}/${countryName.toUpperCase()}/`));
-        let total = result.items.length;
-        // console.log(result);
-        // console.log(result.items);
-        // console.log(result.items.length);
-        return total;
+        return result;
     }
 
-
-
+    
 
     const mapContainer = useRef(null);
     const map = useRef(null);
@@ -31,7 +26,7 @@ export default function Map() {
     const [lat] = useState(35.6844);
     const [zoom] = useState(1.5);
     const [API_KEY] = useState('y7sAqCy7d1bhPP6yU5ZP');
-    const [nPhotos, setnPhotos] = useState(0);
+    // const [nPhotos, setnPhotos] = useState(0);
     const [countryName, setCountryName] = useState("");
     const [userId, setUserId] = useState("");
     let navigate = useNavigate();
@@ -136,39 +131,37 @@ export default function Map() {
                     essential: true // this animation is considered essential with respect to prefers-reduced-motion
                 });
 
-
                 let userID = sessionStorage.getItem('userID');
                 setCountryName(countryName);
                 setUserId(userID);
+                
+                let total = 0;
+
+                sizeMedia(userID, countryName).then(function (result) {
+                    total = result.items.length;
+                    var popup = document.createElement("popup");
+                    var br = document.createElement("br");
+                    var photos = document.createTextNode("Media Files: " + total);
+                    var button = document.createElement('BUTTON');
+                    var text = document.createTextNode("Travel to " + countryName);
 
 
+                    button.appendChild(text);
+                    popup.appendChild(photos);
+                    popup.appendChild(br);
+                    popup.appendChild(button);
+                    button.classList.add("country_btn");
+                    button.onclick = function () {
+                        handleClick(countryName, code)
+                    };
+                    new maplibregl.Popup()
+                        .setLngLat(e.lngLat)
+                        .setDOMContent(popup)
+                        .addTo(map.current);
 
-                let n_photos = nPhotos;
-                let n_audio = 0;
-
-                var popup = document.createElement("popup");
-                var photos = document.createTextNode("Photos: " + n_photos);
-                var br = document.createElement("br");
-                var br2 = document.createElement("br");
-                var audio = document.createTextNode("Audio: " + n_audio);
-                var button = document.createElement('BUTTON');
-                var text = document.createTextNode("Travel to " + countryName);
-
-
-                button.appendChild(text);
-                popup.appendChild(photos);
-                popup.appendChild(br);
-                popup.appendChild(audio);
-                popup.appendChild(br2);
-                popup.appendChild(button);
-                button.classList.add("country_btn");
-                button.onclick = function () {
-                    handleClick(countryName, code)
-                };
-                new maplibregl.Popup()
-                    .setLngLat(e.lngLat)
-                    .setDOMContent(popup)
-                    .addTo(map.current);
+                
+                    console.log(result.items.length )}).catch(function (error) { console.log(error) }); 
+                
             });
 
             // Change the cursor to a pointer when the mouse is over the world layer.
@@ -221,13 +214,7 @@ export default function Map() {
 
     });
 
-    useEffect(() => {
-        sizeMedia(userId, countryName).then((r) => {
-            //console.log(r);
-            setnPhotos(r)
-        });
-        // console.log("t " + nPhotos)
-    })
+
     return (
         <div className="map-wrap">
 

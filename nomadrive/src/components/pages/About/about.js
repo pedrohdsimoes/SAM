@@ -20,8 +20,11 @@ const About = () => {
           type="video/mp4" 
         />
       </video>
-      <div className='text'>
-        <h1>Nao sei o que colocar aqui</h1>
+      <div className='aqui'>
+        <h1>A place where you can store all your dreams and memories!</h1>
+        <h1>You can add all types of media and organize them by country.</h1> 
+        <h1>Explore the world in a new way, where only at NOMADRIVE you can do it.</h1> 
+        <h1> Join us!!</h1>
       </div>
     </div>
   )

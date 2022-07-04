@@ -22,7 +22,7 @@ export default function Home() {
         />
       </video>
       <div className='text'>
-        <h1>Welcome to NomaDrive</h1>
+        <h1>Take the plane!</h1>
       </div>
     </div>
   )

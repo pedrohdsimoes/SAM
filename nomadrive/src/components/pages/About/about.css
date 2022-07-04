@@ -1,0 +1,12 @@
+.aqui {
+    width: 50%;
+    padding-top: 10%;
+    margin-top: 0px;
+    margin-left: 2%;
+    color: #10272e;
+    font-size: 20px;
+    outline: none;
+    display: table;
+    flex-direction: column;
+    /* background:rgba(19, 137, 239, 0.5); */
+}
