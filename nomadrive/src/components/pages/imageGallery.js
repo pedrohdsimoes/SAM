@@ -32,7 +32,7 @@ export default function ImageGallery(files) {
             photos.push(JSON.parse(jsonPhotos));
         }
         else if (files.files[i].includes(".mp3")) {
-            console.log(files)
+            // console.log(files)
             jsonMusic = JSON.stringify({ name: "", src: files.files[i] }, null, 4);
             musicTracks.push(JSON.parse(jsonMusic));
         }
