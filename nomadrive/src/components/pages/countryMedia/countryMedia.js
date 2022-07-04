@@ -26,6 +26,8 @@ import DialogActions from '@mui/material/DialogActions';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -79,7 +81,42 @@ export default function CountryMedia() {
     const [loading, setLoading] = useState(false);
     const [audioName, setAudioName] = useState("");
 
+    let authentication = getAuth();
+    let authToken = sessionStorage.getItem('Auth Token')
 
+    onAuthStateChanged(authentication, (user) => {
+        if (!user) {
+            // no user logged in 
+            let signUp = document.getElementById("signUp")
+            if (signUp !== null)
+                signUp.style.display = "flex"
+
+            let signIn = document.getElementById("signIn")
+            if (signIn !== null)
+                signIn.style.display = "flex"
+        }
+    });
+
+    if (!authToken) {
+        // no user logged in
+        let signUp = document.getElementById("signUp")
+        if (signUp !== null)
+            signUp.style.display = "flex"
+
+        let signIn = document.getElementById("signIn")
+        if (signIn !== null)
+            signIn.style.display = "flex"
+    }
+    else {
+        // user already logged in -> SignUp btn and SignIn btn disappear 
+        let signUp = document.getElementById("signUp")
+        if (signUp !== null)
+            signUp.style.display = "none"
+
+        let signIn = document.getElementById("signIn")
+        if (signIn !== null)
+            signIn.style.display = "none"
+    }
 
 
 

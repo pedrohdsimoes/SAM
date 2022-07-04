@@ -10,7 +10,7 @@ const Navbar = ({ toggle }) => {
 
     onAuthStateChanged(authentication, (user) => {
         if (!user) {
-            // no user logged in
+            // no user logged in 
             let signUp = document.getElementById("signUp")
             if (signUp !== null)
                 signUp.style.display = "flex"
