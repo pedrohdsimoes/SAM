@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './countryMedia.css';
 import Box from '@mui/material/Box';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import Paper from '@mui/material/Paper'
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import Collections from '@mui/icons-material/Collections';
-import VideoLibrary from '@mui/icons-material/VideoLibrary';
 import { useLocation } from "react-router-dom";
 import { Button, IconButton } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -27,6 +22,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { EmailShareButton, FacebookMessengerShareButton, EmailIcon } from "react-share";
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -151,16 +147,17 @@ export default function CountryMedia() {
 
 
     };
-    //Gets Images from firebase and sets URLs in array: filesß
+    //Gets Images from firebase and sets URLs in array: files
     const fetchImages = async () => {
         let storage = getStorage(app);
 
         let result = await listAll(ref(storage, `${userID}/${location.state.countryName.toUpperCase()}/`));
         let urlPromises = result.items.map(imageRef => getDownloadURL(imageRef));
+
         return Promise.all(urlPromises);
 
-    }
 
+    }
     const loadImages = async () => {
         const urls = await fetchImages();
         setFiles(urls);
@@ -245,8 +242,9 @@ export default function CountryMedia() {
         }
 
     }
+    console.log(files)
 
-
+    const test = "https://firebasestorage.googleapis.com/v0/b/nomadrive-7f72f.appspot.com/o/GPKjfiZcsSZS7qc8xxGp5xBRQ2z1%2FBRAZIL%2Fagustin-diaz-gargiulo-7F65HDP0-E0-unsplash.jpg?alt=media&token=acac8664-e5a2-4c46-8419-1fc6d9bdb1e1"
     return (
         <div >
             <div className="heading" >
@@ -301,6 +299,13 @@ export default function CountryMedia() {
                 </BootstrapDialog>
                 <Stack id="upload_menu" direction="row" spacing={0.3} style={{ float: 'right' }}>
                     <Zoom in={!deleteIcon}>
+                        <Tooltip title="Share photos with email">
+                            <EmailShareButton subject={`NomaDrive ${location.state.countryName.toUpperCase()} Photos`} body="NomaDrive Photos: " separator={files}>
+                                <EmailIcon size={32} round={true} />
+                            </EmailShareButton>
+                        </Tooltip>
+                    </Zoom>
+                    <Zoom in={!deleteIcon}>
                         <Tooltip title="Upload your files">
                             <IconButton onClick={handleOpenUploadPage}>
                                 <CloudUploadIcon sx={{ color: '#eec023' }} fontSize="large" />
@@ -344,24 +349,7 @@ export default function CountryMedia() {
 
                     </div>
                     <ImageGallery files={files} deleteIcon={deleteIcon} selectAll={selectAll} audioName={audioName} />
-                    {/* <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }} elevation={3}>
-                        <BottomNavigation
-                            style={{ color: '#11222c' }}
-                            showLabels
-                            value={value}
-                            onChange={(event, newValue) => {
-                                setValue(newValue);
-                            }}
-                            sx={{
-                                "& .Mui-selected, .Mui-selected > svg": {
-                                    color: "#eec023"
-                                }
-                            }}
-                        >
-                            <BottomNavigationAction label="Photos" icon={<Collections />} />
-                            <BottomNavigationAction label="Videos" icon={<VideoLibrary />} />
-                        </BottomNavigation>
-                    </Paper> */}
+
                 </Box>
             </div>
         </div >

@@ -18,7 +18,7 @@ export default function Map() {
         return result;
     }
 
-    
+
 
     const mapContainer = useRef(null);
     const map = useRef(null);
@@ -134,7 +134,7 @@ export default function Map() {
                 let userID = sessionStorage.getItem('userID');
                 setCountryName(countryName);
                 setUserId(userID);
-                
+
                 let total = 0;
 
                 sizeMedia(userID, countryName).then(function (result) {
@@ -159,9 +159,10 @@ export default function Map() {
                         .setDOMContent(popup)
                         .addTo(map.current);
 
-                
-                    console.log(result.items.length )}).catch(function (error) { console.log(error) }); 
-                
+
+                    console.log(result.items.length)
+                }).catch(function (error) { console.log(error) });
+
             });
 
             // Change the cursor to a pointer when the mouse is over the world layer.
